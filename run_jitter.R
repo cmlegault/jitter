@@ -21,7 +21,7 @@ run_jitter <- function(wd, asap.name, njitter){
   
   # directory and file handling
   orig.dir <- getwd()
-  setwd(wd)
+  setwd(wd) # need to use this approach due to running ASAP3 from within function, creates files in current working directory
   fname <- paste0(asap.name, ".dat")
   pname <- paste0(asap.name, ".par")
   
