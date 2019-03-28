@@ -22,7 +22,6 @@ jitter_asap <- function(in.pin, param.list){
   
   for (i in 1:length(param.list$type)){
     if (param.list$type[i] == "jitterbound"){
-      # need to figure out how to deal with single values vs vectors, vs multiple lines
       nrows <- length(out.pin$dat[[i]])
       if (nrows == 1){
         nvals <- length(out.pin$dat[[i]][[1]])
