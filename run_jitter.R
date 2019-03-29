@@ -6,6 +6,7 @@
 
 source("Read.ASAP3.dat.file.R")
 source("Read.ASAP3.pin.file.R")
+source("create_param_list.R")
 source("get_fixed_params.R")
 source("Write.ASAP3.dat.file.R")
 source("Write.ASAP3.pin.file.R")
@@ -140,3 +141,6 @@ run_jitter <- function(wd, asap.name, njitter){
   setwd(orig.dir)
   return(data.frame(objfxn=objfxn, ssbdf=ssbdf))
 }
+
+# to run the function
+run_jitter(wd, asap.name, njitter)
