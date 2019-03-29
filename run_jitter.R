@@ -13,7 +13,7 @@ source("jitter_asap.R")
 
 wd <- "C:\\Users\\chris.legault\\Desktop\\jitter_asap"
 asap.name <- "Simple"
-njitter <- 100
+njitter <- 10
 
 run_jitter <- function(wd, asap.name, njitter){
   
@@ -66,69 +66,14 @@ run_jitter <- function(wd, asap.name, njitter){
   # figure out which parameters are being jittered (non-estimated params stay at orig values)
   # type possible values = "fixed", "jitterbound", "jitterfactor"
   ## TODO check for parameters estimated, create function to fill in param.list values, figure out sel params
-  comments <- asap.pin.obj$comments
-  np <- length(comments)
-  param.list <- list()
-  param.list$type <- rep(NA, np)
-  param.list$lowerbound <- rep(NA, np)
-  param.list$upperbound <- rep(NA, np)
-  param.list$mfactor <- rep(NA, np)
-  
-  p <- which(substring(comments, 1, 12) == "# sel_params")
-  param.list$type[p] <- "jitterbound"
-  param.list$lowerbound[p] <- 0
-  param.list$upperbound[p] <- 1
-  
-  p <- which(substring(comments, 1, 18) == "# index_sel_params")
-  param.list$type[p] <- "jitterbound"
-  param.list$lowerbound[p] <- 0
-  param.list$upperbound[p] <- 1
-  
-  p <- which(comments == "# log_Fmult_year1:")
-  param.list$type[p] <- "jitterbound"
-  param.list$lowerbound[p] <- -15
-  param.list$upperbound[p] <- 2
-  
-  p <- which(comments == "# log_Fmult_devs:")
-  param.list$type[p] <- "jitterbound"
-  param.list$lowerbound[p] <- -15
-  param.list$upperbound[p] <- 15
-  
-  p <- which(comments == "# log_recruit_devs:")
-  param.list$type[p] <- "jitterbound"
-  param.list$lowerbound[p] <- -15
-  param.list$upperbound[p] <- 15
-  
-  p <- which(comments == "# log_N_year1_devs:")
-  param.list$type[p] <- "jitterbound"
-  param.list$lowerbound[p] <- -15
-  param.list$upperbound[p] <- 15
-  
-  p <- which(comments == "# log_q_year1:")
-  param.list$type[p] <- "jitterbound"
-  param.list$lowerbound[p] <- -30
-  param.list$upperbound[p] <- 5
-  
-  p <- which(comments == "# log_q_devs:")
-  param.list$type[p] <- "jitterbound"
-  param.list$lowerbound[p] <- -15
-  param.list$upperbound[p] <- 15
-  
-  p <- which(comments == "# log_SR_scaler:")
-  param.list$type[p] <- "jitterbound"
-  param.list$lowerbound[p] <- -1
-  param.list$upperbound[p] <- 200
-  
-  p <- which(comments == "# SR_steepness:")
-  param.list$type[p] <- "jitterbound"
-  param.list$lowerbound[p] <- 0.20001
-  param.list$upperbound[p] <- 1.0
-  
-  
   # temp for Simple.dat
   # fixing sel and q devs params
   #param.list$type[c(1:10, 16, 19:28)] <- "fixed"
   
+  # create base param.list using ploption = "full" for full range of parameters or ploption = "jitter" for solution plus minus 0.1
+  
+  param.list <- create_param_list(ploption = "full", asap.pin.obj)
+  param.list <- create_param_list(ploption = "jitter", asap.pin.obj)
   
   fixed_params <- get_fixed_params(asap.dat)
   
