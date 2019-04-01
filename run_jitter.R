@@ -16,7 +16,7 @@ wd <- "C:\\Users\\chris.legault\\Desktop\\jitter_asap"
 asap.name <- "Simple"
 njitter <- 10
 
-run_jitter <- function(wd, asap.name, njitter){
+run_jitter <- function(wd, asap.name, njitter, ploption){
   
   # add error checks for missing files and return informative message
   
@@ -65,10 +65,10 @@ run_jitter <- function(wd, asap.name, njitter){
   # create base param.list using 
   # ploption = "full" for full range of parameters or 
   # ploption = "jitter" for solution plus minus 0.1
+  # TODO check SS for how jitter is performed
   
-  param.list <- create_param_list(ploption = "full", asap.pin.obj)
-  param.list <- create_param_list(ploption = "jitter", asap.pin.obj)
-  
+  param.list <- create_param_list(ploption, asap.pin.obj)
+
   # which parameters are not estimated
   fixed_params <- get_fixed_params(asap.dat)
   
@@ -134,4 +134,5 @@ run_jitter <- function(wd, asap.name, njitter){
 }
 
 # to run the function
-run_jitter(wd, asap.name, njitter)
+# ploption can be "jitter" or "full"
+run_jitter(wd, asap.name, njitter, ploption = "jitter")
