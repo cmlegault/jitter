@@ -38,7 +38,7 @@ run_jitter <- function(wd, asap.name, njitter){
   
   # change working directory to jitter dir and clean up files
   setwd("./jitter")
-  # TO DO remove previous jitter files so no confusion
+  # TODO remove previous jitter files so no confusion
   
   # write orig asap input file 
   header.text <- "original ASAP run"
@@ -62,20 +62,14 @@ run_jitter <- function(wd, asap.name, njitter){
   no.init.guesses$dat$ignore_guesses <-  1
   write.asap3.dat.file("no_init_guesses.dat", no.init.guesses, "no initial guesses")
   
-  
-  
-  # figure out which parameters are being jittered (non-estimated params stay at orig values)
-  # type possible values = "fixed", "jitterbound", "jitterfactor"
-  ## TODO check for parameters estimated, create function to fill in param.list values, figure out sel params
-  # temp for Simple.dat
-  # fixing sel and q devs params
-  #param.list$type[c(1:10, 16, 19:28)] <- "fixed"
-  
-  # create base param.list using ploption = "full" for full range of parameters or ploption = "jitter" for solution plus minus 0.1
+  # create base param.list using 
+  # ploption = "full" for full range of parameters or 
+  # ploption = "jitter" for solution plus minus 0.1
   
   param.list <- create_param_list(ploption = "full", asap.pin.obj)
   param.list <- create_param_list(ploption = "jitter", asap.pin.obj)
   
+  # which parameters are not estimated
   fixed_params <- get_fixed_params(asap.dat)
   
   if (length(fixed_params[,1]) != length(param.list$type)) print("ERROR")
@@ -84,9 +78,6 @@ run_jitter <- function(wd, asap.name, njitter){
   
   # loop through njitter writing pin file with random values and running program
   # when run asap use -ainp jitterXXX.pin along with -ind no_init_guesses.dat 
-  # save .rdat file to jitterXXX.rdat 
-  # summarize results
-  
   for (ijit in 1:njitter){
     jname <- paste0("jitter", ijit, ".pin")
     asap.pin.jit <- jitter_asap(asap.pin.obj, param.list)
@@ -106,7 +97,7 @@ run_jitter <- function(wd, asap.name, njitter){
   }
   objfxn <- c(objfxn, orig$like$lk.total)
   
-  # put this in separate function
+  # put this in separate function and make optional
   # # plot obj fxn
   # plot(0:njitter,objfxn)
   # abline(h=objfxn[1])
@@ -124,7 +115,7 @@ run_jitter <- function(wd, asap.name, njitter){
     ssbdf <- rbind(ssbdf, thisdf)
   }
   
-  # put these in separate function
+  # put these in separate function and make optional
   # #g <- ggplot(ssbdf, aes(x=Year, y=SSB, color=as.factor(jitter))) +
   # #  geom_line() +
   # #  theme_bw()
