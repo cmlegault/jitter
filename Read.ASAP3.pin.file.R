@@ -16,7 +16,8 @@ read.asap3.pin.file <- function(pinf){
   nselparams <- which(comments == "# log_Fmult_year1:") - 1
   for (i in 1:nselparams){
     ind <- ind + 1
-    dat[[ind]] <- scan(pinf, what = double(), skip = dat.start[ind], n = 1)
+    dat[[ind]] <- list()
+    dat[[ind]][[1]] <- scan(pinf, what = double(), skip = dat.start[ind], n = 1)
   }
   
   # log Fmult year 1 (one value for each fleet)
@@ -62,16 +63,19 @@ read.asap3.pin.file <- function(pinf){
   nindexselparams <- which(comments == "# log_SR_scaler:") - ind - 1
   for (i in 1:nindexselparams){
     ind <- ind + 1
-    dat[[ind]] <- scan(pinf, what = double(), skip = dat.start[ind], n = 1)
+    dat[[ind]] <- list()
+    dat[[ind]][[1]] <- scan(pinf, what = double(), skip = dat.start[ind], n = 1)
   }
   
   # log stock recruit scaler
   ind <- ind + 1
-  dat[[ind]] <- scan(pinf, what = double(), skip = dat.start[ind], n = 1)
+  dat[[ind]] <- list()
+  dat[[ind]][[1]] <- scan(pinf, what = double(), skip = dat.start[ind], n = 1)
   
   # stock recruit steepness
   ind <- ind + 1
-  dat[[ind]] <- scan(pinf, what = double(), skip = dat.start[ind], n = 1)
+  dat[[ind]] <- list()
+  dat[[ind]][[1]] <- scan(pinf, what = double(), skip = dat.start[ind], n = 1)
   
   return(list(dat=dat, comments=comments))  
 }

@@ -101,7 +101,7 @@ run_jitter <- function(wd, asap.name, njitter){
   # TODO make sure don't include the bad runs
   objfxn <- rep(NA, njitter)
   for (ijit in 1:njitter){
-    asap <- dget(paste0("jitter", ijit, ".rdat"))
+    asap <- dget(paste0(wd,"\\jitter\\jitter", ijit, ".rdat"))
     objfxn[ijit] <- asap$like$lk.total
   }
   objfxn <- c(objfxn, orig$like$lk.total)
@@ -139,7 +139,7 @@ run_jitter <- function(wd, asap.name, njitter){
 
   # change back to original directory
   setwd(orig.dir)
-  return(data.frame(objfxn=objfxn, ssbdf=ssbdf))
+  return(list(objfxn=objfxn, ssbdf=ssbdf))
 }
 
 # to run the function

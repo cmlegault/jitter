@@ -86,19 +86,12 @@ create_param_list <- function(ploption, asap.pin.obj){
       
       x <- dat[[i]]
       
-      if (data.class(x) == "numeric"){
-        param.list$lowerbound[[i]] <- dat[[i]] - 0.1
-        param.list$upperbound[[i]] <- dat[[i]] + 0.1
-      }
-      
-      if (data.class(x) == "list"){
-        nrows <- length(x)
-        param.list$lowerbound[[i]] <- list()
-        param.list$upperbound[[i]] <- list()
-        for (irow in 1:nrows){
-          param.list$lowerbound[[i]][[irow]] <- dat[[i]][[irow]] - 0.1
-          param.list$upperbound[[i]][[irow]] <- dat[[i]][[irow]] + 0.1
-        }
+      nrows <- length(x)
+      param.list$lowerbound[[i]] <- list()
+      param.list$upperbound[[i]] <- list()
+      for (irow in 1:nrows){
+        param.list$lowerbound[[i]][[irow]] <- dat[[i]][[irow]] - 0.1
+        param.list$upperbound[[i]][[irow]] <- dat[[i]][[irow]] + 0.1
       }
     } 
     
