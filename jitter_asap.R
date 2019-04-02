@@ -50,5 +50,6 @@ jitter_asap <- function(in.pin, param.list, jitter=0.1){
       }
     }
   }
+  
   return(out.pin)
 }

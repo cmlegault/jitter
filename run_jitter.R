@@ -65,9 +65,9 @@ run_jitter <- function(wd, asap.name, njitter, ploption){
   # create base param.list using 
   # ploption = "full" for full range of parameters or 
   # ploption = "jitter" for solution plus minus 0.1
-  ###### TODO check SS for how jitter is performed
-  
-  param.list <- create_param_list(ploption, asap.pin)
+  param.list <- create_param_list(asap.pin)
+  param.list$type <- rep(ploption, np)
+    
 
   # which parameters are not estimated
   fixed_params <- get_fixed_params(asap.dat)
@@ -135,3 +135,4 @@ run_jitter <- function(wd, asap.name, njitter, ploption){
 # to run the function
 # ploption can be "jitter" or "full"
 run_jitter(wd, asap.name, njitter, ploption = "jitter")
+run_jitter(wd, asap.name, njitter, ploption = "full")
