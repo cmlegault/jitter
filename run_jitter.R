@@ -32,12 +32,17 @@ run_jitter <- function(wd, asap.name, njitter, ploption){
   }
   
   # directory and file handling
+  # need to use setwd approach because ASAP3 creates files in current working directory
   orig.dir <- getwd()
-  setwd(wd) # need to use this approach due to running ASAP3 from within function, creates files in current working directory
+  setwd(wd) 
   fname <- paste0(asap.name, ".dat")
+  rname <- paste0(asap.name, ".rdat")
   pname <- paste0(asap.name, ".par")
   
   asap.dat <- read.asap3.dat.file(fname)
+  asap.rdat <- dget(rname)
+  asap.pin.obj <- read.asap3.pin.file(pname)
+  
   
   # check for jitter subdirectory, create if necessary
   if (!dir.exists("./jitter")){
