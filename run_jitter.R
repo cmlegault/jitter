@@ -111,7 +111,7 @@ run_jitter <- function(wd, asap.name, njitter, ploption){
     }
   }
   
-  # put this in separate function and make optional
+  ### TODO put this in separate function and make optional
   # # plot obj fxn
   # plot(0:njitter,objfxn)
   # abline(h=objfxn[1])
