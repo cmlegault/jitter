@@ -8,9 +8,7 @@ get_fixed_params <- function(asap.dat){
   sel_ini <- asap.dat$dat$sel_ini
   nages <- asap.dat$dat$n_ages
   for (iblock in 1:asap.dat$dat$n_fleet_sel_blocks){
-    startrow <- (iblock - 1) * (nages + 6) + 1
-    endrow <- startrow + nages + 6 - 1
-    sel_ini_block <- sel_ini[[iblock]][startrow:endrow, ]
+    sel_ini_block <- sel_ini[[iblock]]
     if (sel_block_option[iblock] == 1){  # by age
       counter <- counter + 1:nages
       temp <- rep("estimated", nages)
