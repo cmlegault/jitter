@@ -31,6 +31,10 @@ run_jitter <- function(wd, asap.name, njitter, ploption){
     return(paste0("Error: ", asap.name, ".par not located in ", wd))
   }
   
+  if (!file.exists(paste0(wd, "\\ASAP3.exe"))){
+    return(paste0("Error: ASAP3.exe not located in ", wd))
+  }
+  
   # directory and file handling
   # need to use setwd approach because ASAP3 creates files in current working directory
   orig.dir <- getwd()
@@ -53,6 +57,7 @@ run_jitter <- function(wd, asap.name, njitter, ploption){
   
   # change working directory to jitter dir and clean up files
   setwd("./jitter")
+  shell("del jitter*.par", mustWork = NA, intern = TRUE)
   shell("del jitter*.pin", mustWork = NA, intern = TRUE)
   shell("del jitter*.rdat", mustWork = NA, intern = TRUE)
 
@@ -133,8 +138,8 @@ run_jitter <- function(wd, asap.name, njitter, ploption){
 
 # to run the function
 # ploption can be "jitter" or "full"
-run_jitter(wd, asap.name, njitter, ploption = "jitter")
-run_jitter(wd, asap.name, njitter, ploption = "full")
+myjitter <- run_jitter(wd, asap.name, njitter, ploption = "jitter")
+myfull <- run_jitter(wd, asap.name, njitter, ploption = "full")
 
 # temp comparison of jittered values
 tdf <- matrix(NA, nrow = njitter, ncol = 113)
@@ -146,3 +151,9 @@ for (ijit in 1:njitter){
 }
 tdf
 summary(tdf)
+
+# run fluke
+fluke.dir <- "C:\\Users\\chris.legault\\Desktop\\jitter_asap\\fluke"
+fluke.name <- "F2018_BASE"
+myjitter <- run_jitter(paste0(fluke.dir,"\\myjitter"), fluke.name, njitter=50, ploption = "jitter")
+myfull <- run_jitter(paste0(fluke.dir,"\\myfull"), fluke.name, njitter=50, ploption = "full")
