@@ -92,6 +92,7 @@ run_jitter <- function(wd, asap.name, njitter, ploption){
     # use presence of .std file to indicate converged run
     if (file.exists("asap3.std")){
       shell(paste("copy asap3.rdat", paste0("jitter", ijit, ".rdat")), intern=TRUE)
+      shell(paste("copy asap3.par", paste0("jitter", ijit, ".par")), intern=TRUE)
       asap <- dget("asap3.rdat")
       objfxn[ijit] <- asap$like$lk.total
       ssb <- asap$SSB
