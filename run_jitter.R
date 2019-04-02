@@ -41,7 +41,7 @@ run_jitter <- function(wd, asap.name, njitter, ploption){
   
   asap.dat <- read.asap3.dat.file(fname)
   asap.rdat <- dget(rname)
-  asap.pin.obj <- read.asap3.pin.file(pname)
+  asap.pin <- read.asap3.pin.file(pname)
   
   
   # check for jitter subdirectory, create if necessary
@@ -54,25 +54,9 @@ run_jitter <- function(wd, asap.name, njitter, ploption){
   
   # change working directory to jitter dir and clean up files
   setwd("./jitter")
-  # TODO remove previous jitter files so no confusion
-  
-  # write orig asap input file 
-  header.text <- "original ASAP run"
-  write.asap3.dat.file(fname,asap.dat,header.text)
-  
-  # run original file and save important bits
-  shell("del asap3.rdat", mustWork = NA)
-  shell(paste("ASAP3.exe -ind", fname), intern=TRUE)
-  shell("copy asap3.rdat orig.rdat")
-  shell("copy asap3.par jitter.pin")
-  orig <- dget("orig.rdat") 
-  asap.pin.obj <- read.asap3.pin.file("jitter.pin")
-  
-  # this is how to write the pin file
-  ##write.asap3.pin.file('delme.pin', asap.pin.obj)
-  
-  # delete everything except .exe, .rdat, and .pin needed???
-  
+  shell("del jitter*.pin", mustWork = NA, intern = TRUE)
+  shell("del jitter*.rdat", mustWork = NA, intern = TRUE)
+
   # write orig file with ignore_guesses flag=1 to file no_init_guesses.dat
   no.init.guesses <- asap.dat
   no.init.guesses$dat$ignore_guesses <-  1
@@ -83,7 +67,7 @@ run_jitter <- function(wd, asap.name, njitter, ploption){
   # ploption = "jitter" for solution plus minus 0.1
   # TODO check SS for how jitter is performed
   
-  param.list <- create_param_list(ploption, asap.pin.obj)
+  param.list <- create_param_list(ploption, asap.pin)
 
   # which parameters are not estimated
   fixed_params <- get_fixed_params(asap.dat)
@@ -96,7 +80,7 @@ run_jitter <- function(wd, asap.name, njitter, ploption){
   # when run asap use -ainp jitterXXX.pin along with -ind no_init_guesses.dat 
   for (ijit in 1:njitter){
     jname <- paste0("jitter", ijit, ".pin")
-    asap.pin.jit <- jitter_asap(asap.pin.obj, param.list)
+    asap.pin.jit <- jitter_asap(asap.pin, param.list)
     write.asap3.pin.file(jname, asap.pin.jit)
     shell("del asap3.rdat", intern = TRUE)
     shell(paste("ASAP3.exe -ind no_init_guesses.dat -ainp", jname), intern=TRUE)
@@ -111,7 +95,8 @@ run_jitter <- function(wd, asap.name, njitter, ploption){
     asap <- dget(paste0(wd,"\\jitter\\jitter", ijit, ".rdat"))
     objfxn[ijit] <- asap$like$lk.total
   }
-  objfxn <- c(objfxn, orig$like$lk.total)
+  ## fix this line - no more orig
+  ## objfxn <- c(objfxn, orig$like$lk.total)
   
   # put this in separate function and make optional
   # # plot obj fxn
