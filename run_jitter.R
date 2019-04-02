@@ -14,20 +14,20 @@ source("jitter_asap.R")
 
 wd <- "C:\\Users\\chris.legault\\Desktop\\jitter_asap"
 asap.name <- "Simple"
-njitter <- 10
+njitter <- 2
 
 run_jitter <- function(wd, asap.name, njitter, ploption){
   
   # error checks for missing files 
-  if (!exists(paste0(wd, "\\", asap.name, ".dat"))){
+  if (!file.exists(paste0(wd, "\\", asap.name, ".dat"))){
     return(paste0("Error: ", asap.name, ".dat not located in ", wd))
   }
   
-  if (!exists(paste0(wd, "\\", asap.name, ".rdat"))){
+  if (!file.exists(paste0(wd, "\\", asap.name, ".rdat"))){
     return(paste0("Error: ", asap.name, ".rdat not located in ", wd))
   }
   
-  if (!exists(paste0(wd, "\\", asap.name, ".par"))){
+  if (!file.exists(paste0(wd, "\\", asap.name, ".par"))){
     return(paste0("Error: ", asap.name, ".par not located in ", wd))
   }
   
@@ -42,8 +42,7 @@ run_jitter <- function(wd, asap.name, njitter, ploption){
   asap.dat <- read.asap3.dat.file(fname)
   asap.rdat <- dget(rname)
   asap.pin <- read.asap3.pin.file(pname)
-  
-  
+
   # check for jitter subdirectory, create if necessary
   if (!dir.exists("./jitter")){
     shell("mkdir jitter")
@@ -57,43 +56,51 @@ run_jitter <- function(wd, asap.name, njitter, ploption){
   shell("del jitter*.pin", mustWork = NA, intern = TRUE)
   shell("del jitter*.rdat", mustWork = NA, intern = TRUE)
 
-  # write orig file with ignore_guesses flag=1 to file no_init_guesses.dat
+  # write orig file with ignore_guesses flag=1 to file [base]_no_init_guesses.dat
+  nname <- paste0(asap.name, "_no_init_guesses.dat")
   no.init.guesses <- asap.dat
   no.init.guesses$dat$ignore_guesses <-  1
-  write.asap3.dat.file("no_init_guesses.dat", no.init.guesses, "no initial guesses")
+  write.asap3.dat.file(nname, no.init.guesses, "no initial guesses")
   
   # create base param.list using 
   # ploption = "full" for full range of parameters or 
   # ploption = "jitter" for solution plus minus 0.1
-  # TODO check SS for how jitter is performed
+  ###### TODO check SS for how jitter is performed
   
   param.list <- create_param_list(ploption, asap.pin)
 
   # which parameters are not estimated
   fixed_params <- get_fixed_params(asap.dat)
   
-  if (length(fixed_params[,1]) != length(param.list$type)) print("ERROR")
+  # check to make sure same number of parameters in par file and returned by get_fixed_params
+  if (length(fixed_params[,1]) != length(param.list$type)){
+    return("ERROR: different number of parameters in .par and calculated by get_fixed_params function")
+  }
   
+  # fix the parameters not estimated at original values
   param.list$type[fixed_params[,2] == "fixed"] <- "fixed"
   
   # loop through njitter writing pin file with random values and running program
   # when run asap use -ainp jitterXXX.pin along with -ind no_init_guesses.dat 
+  ####### TODO check for converged run
   for (ijit in 1:njitter){
     jname <- paste0("jitter", ijit, ".pin")
     asap.pin.jit <- jitter_asap(asap.pin, param.list)
     write.asap3.pin.file(jname, asap.pin.jit)
     shell("del asap3.rdat", intern = TRUE)
-    shell(paste("ASAP3.exe -ind no_init_guesses.dat -ainp", jname), intern=TRUE)
+    shell(paste("ASAP3.exe -ind", nname, "-ainp", jname), intern=TRUE)
     shell(paste("copy asap3.rdat", paste0("jitter", ijit, ".rdat")), intern=TRUE)
     print(paste("jitter", ijit, "complete"))
   }
   
   # get obj fxn
-  # TODO make sure don't include the bad runs
   objfxn <- rep(NA, njitter)
   for (ijit in 1:njitter){
-    asap <- dget(paste0(wd,"\\jitter\\jitter", ijit, ".rdat"))
-    objfxn[ijit] <- asap$like$lk.total
+    jname <- paste0("jitter", ijit, ".rdat")
+    if (file.exists(jname)){
+      asap <- dget(jname)
+      objfxn[ijit] <- asap$like$lk.total
+    }
   }
   ## fix this line - no more orig
   ## objfxn <- c(objfxn, orig$like$lk.total)
