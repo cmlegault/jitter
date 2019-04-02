@@ -14,7 +14,7 @@ source("jitter_asap.R")
 
 wd <- "C:\\Users\\chris.legault\\Desktop\\jitter_asap"
 asap.name <- "Simple"
-njitter <- 2
+njitter <- 10
 
 run_jitter <- function(wd, asap.name, njitter, ploption){
   
@@ -134,3 +134,14 @@ run_jitter <- function(wd, asap.name, njitter, ploption){
 # ploption can be "jitter" or "full"
 run_jitter(wd, asap.name, njitter, ploption = "jitter")
 run_jitter(wd, asap.name, njitter, ploption = "full")
+
+# temp comparison of jittered values
+tdf <- matrix(NA, nrow = njitter, ncol = 113)
+for (ijit in 1:njitter){
+  jname <- paste0(wd, "\\jitter\\jitter", ijit, ".pin")
+  tpin <- read.asap3.pin.file(jname)
+  tpun <- unlist(tpin$dat)
+  tdf[ijit, ] <- tpun
+}
+tdf
+summary(tdf)
