@@ -4,10 +4,12 @@
 # jitter approach based on SS3.30
 
 jitter_asap <- function(in.pin, param.list, jitter=0.1){
+  
   out.pin <- in.pin
   
   zmin <- qnorm(0.001)
   zmax <- qnorm(0.999)
+  
   for (i in 1:length(param.list$type)){
     
     if (param.list$type[i] == "full"){
@@ -39,9 +41,9 @@ jitter_asap <- function(in.pin, param.list, jitter=0.1){
           kjitter <- kval + (jitter * ((2 * temp) - 1))
           if (kjitter < 0.0001){
             newval <- Pmin + 0.1 * (Pval - Pmin)
-          }else if (kjitter > 0.9999){
+          } else if (kjitter > 0.9999){
             newval <- Pmax - 0.1 * (Pmax - Pval)
-          }else{
+          } else {
             zjitter <- qnorm(kjitter)
             newval <- Pmean + (Psigma * zjitter)
           }
@@ -49,7 +51,8 @@ jitter_asap <- function(in.pin, param.list, jitter=0.1){
         }
       }
     }
-  }
+    
+  } # end of param.list loop
   
   return(out.pin)
 }

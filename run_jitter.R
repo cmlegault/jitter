@@ -80,8 +80,6 @@ run_jitter <- function(wd, asap.name, njitter, ploption){
   param.list$type[fixed_params[,2] == "fixed"] <- "fixed"
   
   # loop through njitter writing pin file with random values and running program
-  # when run asap use -ainp jitterXXX.pin along with -ind no_init_guesses.dat 
-  ####### TODO check for converged run
   objfxn <- rep(NA, njitter)
   ssbdf <- data.frame()
   for (ijit in 1:njitter){
@@ -91,6 +89,7 @@ run_jitter <- function(wd, asap.name, njitter, ploption){
     shell("del asap3.rdat", intern = TRUE)
     shell("del asap3.std", intern = TRUE)
     shell(paste("ASAP3.exe -ind", nname, "-ainp", jname), intern=TRUE)
+    # use presence of .std file to indicate converged run
     if (file.exists("asap3.std")){
       shell(paste("copy asap3.rdat", paste0("jitter", ijit, ".rdat")), intern=TRUE)
       asap <- dget("asap3.rdat")
