@@ -77,51 +77,42 @@ run_jitter <- function(wd, asap.name, njitter, ploption){
     return("ERROR: different number of parameters in .par and calculated by get_fixed_params function")
   }
   
-  # fix the parameters not estimated at original values
+  # parameters not estimated stay at original values
   param.list$type[fixed_params[,2] == "fixed"] <- "fixed"
   
   # loop through njitter writing pin file with random values and running program
   # when run asap use -ainp jitterXXX.pin along with -ind no_init_guesses.dat 
   ####### TODO check for converged run
+  objfxn <- rep(NA, njitter)
+  ssbdf <- data.frame()
+  years <- asap$parms$styr:asap$parms$endyr
   for (ijit in 1:njitter){
     jname <- paste0("jitter", ijit, ".pin")
     asap.pin.jit <- jitter_asap(asap.pin, param.list)
     write.asap3.pin.file(jname, asap.pin.jit)
     shell("del asap3.rdat", intern = TRUE)
+    shell("del asap3.std", intern = TRUE)
     shell(paste("ASAP3.exe -ind", nname, "-ainp", jname), intern=TRUE)
-    shell(paste("copy asap3.rdat", paste0("jitter", ijit, ".rdat")), intern=TRUE)
-    print(paste("jitter", ijit, "complete"))
-  }
-  
-  # get obj fxn
-  objfxn <- rep(NA, njitter)
-  for (ijit in 1:njitter){
-    jname <- paste0("jitter", ijit, ".rdat")
-    if (file.exists(jname)){
-      asap <- dget(jname)
+    if (file.exists("asap3.std")){
+      shell(paste("copy asap3.rdat", paste0("jitter", ijit, ".rdat")), intern=TRUE)
+      asap <- dget("asap3.rdat")
       objfxn[ijit] <- asap$like$lk.total
+      ssb <- asap$SSB
+      thisdf <- data.frame(jitter = ijit,
+                           Year = years,
+                           SSB = ssb)
+      ssbdf <- rbind(ssbdf, thisdf)
+      print(paste("jitter", ijit, "complete, objective function =", objfxn[ijit]))
+    }else{
+      print(paste("jitter", ijit, "did not converge"))
     }
   }
-  ## fix this line - no more orig
-  ## objfxn <- c(objfxn, orig$like$lk.total)
   
   # put this in separate function and make optional
   # # plot obj fxn
   # plot(0:njitter,objfxn)
   # abline(h=objfxn[1])
   # points(0,objfxn[1],col="red",pch=16)
-  
-  # compare SSB time series
-  ssbdf <- data.frame()
-  years <- asap$parms$styr:asap$parms$endyr
-  for (ijit in 1:njitter){
-    asap <- dget(paste0("jitter", ijit, ".rdat"))
-    ssb <- asap$SSB
-    thisdf <- data.frame(jitter = ijit,
-                         Year = years,
-                         SSB = ssb)
-    ssbdf <- rbind(ssbdf, thisdf)
-  }
   
   # put these in separate function and make optional
   # #g <- ggplot(ssbdf, aes(x=Year, y=SSB, color=as.factor(jitter))) +
@@ -138,6 +129,7 @@ run_jitter <- function(wd, asap.name, njitter, ploption){
 
   # change back to original directory
   setwd(orig.dir)
+  
   return(list(objfxn=objfxn, ssbdf=ssbdf))
 }
 
