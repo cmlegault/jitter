@@ -142,7 +142,7 @@ myjitter <- run_jitter(wd, asap.name, njitter, ploption = "jitter")
 myfull <- run_jitter(wd, asap.name, njitter, ploption = "full")
 
 # temp comparison of jittered values
-tdf <- matrix(NA, nrow = njitter, ncol = 113)
+tdf <- matrix(NA, nrow = njitter, ncol = 1156)
 for (ijit in 1:njitter){
   jname <- paste0(wd, "\\jitter\\jitter", ijit, ".pin")
   tpin <- read.asap3.pin.file(jname)
@@ -150,10 +150,12 @@ for (ijit in 1:njitter){
   tdf[ijit, ] <- tpun
 }
 tdf
-summary(tdf)
+summary(tdf[, 1:20])
+
 
 # run fluke
 fluke.dir <- "C:\\Users\\chris.legault\\Desktop\\jitter_asap\\fluke"
 fluke.name <- "F2018_BASE"
+wd <- paste0(fluke.dir,"\\myjitter") 
 myjitter <- run_jitter(paste0(fluke.dir,"\\myjitter"), fluke.name, njitter=50, ploption = "jitter")
 myfull <- run_jitter(paste0(fluke.dir,"\\myfull"), fluke.name, njitter=50, ploption = "full")
