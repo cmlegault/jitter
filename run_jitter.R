@@ -18,7 +18,18 @@ njitter <- 10
 
 run_jitter <- function(wd, asap.name, njitter, ploption){
   
-  # add error checks for missing files and return informative message
+  # error checks for missing files 
+  if (!exists(paste0(wd, "\\", asap.name, ".dat"))){
+    return(paste0("Error: ", asap.name, ".dat not located in ", wd))
+  }
+  
+  if (!exists(paste0(wd, "\\", asap.name, ".rdat"))){
+    return(paste0("Error: ", asap.name, ".rdat not located in ", wd))
+  }
+  
+  if (!exists(paste0(wd, "\\", asap.name, ".par"))){
+    return(paste0("Error: ", asap.name, ".par not located in ", wd))
+  }
   
   # directory and file handling
   orig.dir <- getwd()
