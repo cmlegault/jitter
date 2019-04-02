@@ -13,14 +13,18 @@ create_param_list <- function(asap.pin.obj){
 
   p <- which(substring(comments, 1, 12) == "# sel_params")
   for (ip in p){
-    param.list$lowerbound[[ip]] <- 0
-    param.list$upperbound[[ip]] <- 1
+    param.list$lowerbound[[ip]] <- list()
+    param.list$upperbound[[ip]] <- list()
+    param.list$lowerbound[[ip]][[1]] <- 0
+    param.list$upperbound[[ip]][[1]] <- 1
   }
   
   p <- which(substring(comments, 1, 18) == "# index_sel_params")
   for (ip in p){
-    param.list$lowerbound[[ip]] <- 0
-    param.list$upperbound[[ip]] <- 1
+    param.list$lowerbound[[ip]] <- list()
+    param.list$upperbound[[ip]] <- list()
+    param.list$lowerbound[[ip]][[1]] <- 0
+    param.list$upperbound[[ip]][[1]] <- 1
   }
   
   p <- which(comments == "# log_Fmult_year1:")
@@ -66,12 +70,16 @@ create_param_list <- function(asap.pin.obj){
   }
   
   p <- which(comments == "# log_SR_scaler:")
-  param.list$lowerbound[[p]] <- -1
-  param.list$upperbound[[p]] <- 200
+  param.list$lowerbound[[p]] <- list()
+  param.list$upperbound[[p]] <- list()
+  param.list$lowerbound[[p]][[1]] <- -1
+  param.list$upperbound[[p]][[1]] <- 200
   
   p <- which(comments == "# SR_steepness:")
-  param.list$lowerbound[[p]] <- 0.20001
-  param.list$upperbound[[p]] <- 1.0
+  param.list$lowerbound[[p]] <- list()
+  param.list$upperbound[[p]] <- list()
+  param.list$lowerbound[[p]][[1]] <- 0.20001
+  param.list$upperbound[[p]][[1]] <- 1.0
   
   return(param.list)
 }
