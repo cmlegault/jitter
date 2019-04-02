@@ -85,7 +85,6 @@ run_jitter <- function(wd, asap.name, njitter, ploption){
   ####### TODO check for converged run
   objfxn <- rep(NA, njitter)
   ssbdf <- data.frame()
-  years <- asap$parms$styr:asap$parms$endyr
   for (ijit in 1:njitter){
     jname <- paste0("jitter", ijit, ".pin")
     asap.pin.jit <- jitter_asap(asap.pin, param.list)
@@ -99,7 +98,7 @@ run_jitter <- function(wd, asap.name, njitter, ploption){
       objfxn[ijit] <- asap$like$lk.total
       ssb <- asap$SSB
       thisdf <- data.frame(jitter = ijit,
-                           Year = years,
+                           Year = asap$parms$styr:asap$parms$endyr,
                            SSB = ssb)
       ssbdf <- rbind(ssbdf, thisdf)
       print(paste("jitter", ijit, "complete, objective function =", objfxn[ijit]))
