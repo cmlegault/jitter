@@ -1,21 +1,5 @@
 # code to run jitter asap
 
-# rem to set working directory to code directory
-
-#library("ggplot2")
-
-source("Read.ASAP3.dat.file.R")
-source("Read.ASAP3.pin.file.R")
-source("create_param_list.R")
-source("get_fixed_params.R")
-source("Write.ASAP3.dat.file.R")
-source("Write.ASAP3.pin.file.R")
-source("jitter_asap.R")
-
-wd <- "C:\\Users\\chris.legault\\Desktop\\jitter_asap"
-asap.name <- "Simple"
-njitter <- 10
-
 run_jitter <- function(wd, asap.name, njitter, ploption){
   
   # error checks for missing files 
@@ -136,26 +120,3 @@ run_jitter <- function(wd, asap.name, njitter, ploption){
   return(list(objfxn=objfxn, ssbdf=ssbdf))
 }
 
-# to run the function
-# ploption can be "jitter" or "full"
-myjitter <- run_jitter(wd, asap.name, njitter, ploption = "jitter")
-myfull <- run_jitter(wd, asap.name, njitter, ploption = "full")
-
-# temp comparison of jittered values
-tdf <- matrix(NA, nrow = njitter, ncol = 1156)
-for (ijit in 1:njitter){
-  jname <- paste0(wd, "\\jitter\\jitter", ijit, ".pin")
-  tpin <- read.asap3.pin.file(jname)
-  tpun <- unlist(tpin$dat)
-  tdf[ijit, ] <- tpun
-}
-tdf
-summary(tdf[, 1:20])
-
-
-# run fluke
-fluke.dir <- "C:\\Users\\chris.legault\\Desktop\\jitter_asap\\fluke"
-fluke.name <- "F2018_BASE"
-wd <- paste0(fluke.dir,"\\myjitter") 
-myjitter <- run_jitter(paste0(fluke.dir,"\\myjitter"), fluke.name, njitter=50, ploption = "jitter")
-myfull <- run_jitter(paste0(fluke.dir,"\\myfull"), fluke.name, njitter=50, ploption = "full")
