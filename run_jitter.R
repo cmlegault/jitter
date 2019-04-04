@@ -1,6 +1,6 @@
 # code to run jitter asap
 
-run_jitter <- function(wd, asap.name, njitter, ploption, save.plots, plotf){
+run_jitter <- function(wd, asap.name, njitter, ploption, save.plots, od, plotf){
   
   # error checks for missing files 
   if (!file.exists(paste0(wd, "\\", asap.name, ".dat"))){
@@ -95,29 +95,15 @@ run_jitter <- function(wd, asap.name, njitter, ploption, save.plots, plotf){
     }
   }
   
-  # plot obj fxn results with horizontal line for original value
-  Realization <- 1:njitter
-  plot(Realization, objfxn, ylab = "Objective Function")
-    abline(h = asap.rdat$like$lk.total, col="red")
-
-  if (save.plots==TRUE) savePlot(paste0(wd, "jitter_objfxn.", plotf), type=plotf)
-    
-  # put these in separate function and make optional
-  # #g <- ggplot(ssbdf, aes(x=Year, y=SSB, color=as.factor(jitter))) +
-  # #  geom_line() +
-  # #  theme_bw()
-  # #
-  # #print(g)
-  # 
-  # g <- ggplot(ssbdf, aes(x=Year, y=SSB, group=Year)) +
-  #   geom_boxplot() +
-  #   theme_bw()
-  # 
-  # print(g)
+  # results list
+  reslist <- list(objfxn=objfxn, ssbdf=ssbdf)
+  
+  # plot obj fxn results 
+  plot_jitter(reslist, asap.rdat, save.plots, od, plotf)
 
   # change back to original directory
   setwd(orig.dir)
   
-  return(list(objfxn=objfxn, ssbdf=ssbdf))
+  return(reslist)
 }
 
