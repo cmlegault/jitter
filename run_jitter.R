@@ -1,6 +1,6 @@
 # code to run jitter asap
 
-run_jitter <- function(wd, asap.name, njitter, ploption){
+run_jitter <- function(wd, asap.name, njitter, ploption, save.plots, plotf){
   
   # error checks for missing files 
   if (!file.exists(paste0(wd, "\\", asap.name, ".dat"))){
@@ -95,12 +95,13 @@ run_jitter <- function(wd, asap.name, njitter, ploption){
     }
   }
   
-  ### TODO put this in separate function and make optional
-  # # plot obj fxn
-  # plot(0:njitter,objfxn)
-  # abline(h=objfxn[1])
-  # points(0,objfxn[1],col="red",pch=16)
-  
+  # plot obj fxn results with horizontal line for original value
+  Realization <- 1:njitter
+  plot(Realization, objfxn, ylab = "Objective Function")
+    abline(h = asap.rdat$like$lk.total, col="red")
+
+  if (save.plots==TRUE) savePlot(paste0(wd, "jitter_objfxn.", plotf), type=plotf)
+    
   # put these in separate function and make optional
   # #g <- ggplot(ssbdf, aes(x=Year, y=SSB, color=as.factor(jitter))) +
   # #  geom_line() +
