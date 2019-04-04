@@ -47,7 +47,9 @@ jitter_asap <- function(in.pin, param.list, jitterfac=0.1){
             zjitter <- qnorm(kjitter)
             newval <- Pmean + (Psigma * zjitter)
           }
-          ### TODO add check for negative sel param and replace with 0
+          # check for jittered value outside bounds
+          if (newval < Pmin) newval <- Pmin
+          if (newval > Pmax) newval <- Pmax
           out.pin$dat[[i]][[irow]][ival] <- newval
         }
       }
