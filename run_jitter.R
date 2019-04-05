@@ -70,7 +70,6 @@ run_jitter <- function(wd, asap.name, njitter, ploption, save.plots, od, plotf){
   
   # loop through njitter writing pin file with random values and running program
   objfxn <- rep(NA, njitter)
-  ssbdf <- data.frame()
   for (ijit in 1:njitter){
     jname <- paste0("jitter", ijit, ".pin")
     asap.pin.jit <- jitter_asap(asap.pin, param.list)
@@ -84,11 +83,6 @@ run_jitter <- function(wd, asap.name, njitter, ploption, save.plots, od, plotf){
       shell(paste("copy asap3.par", paste0("jitter", ijit, ".par")), intern=TRUE)
       asap <- dget("asap3.rdat")
       objfxn[ijit] <- asap$like$lk.total
-      ssb <- asap$SSB
-      thisdf <- data.frame(jitter = ijit,
-                           Year = asap$parms$styr:asap$parms$endyr,
-                           SSB = ssb)
-      ssbdf <- rbind(ssbdf, thisdf)
       print(paste("jitter", ijit, "complete, objective function =", objfxn[ijit]))
     }else{
       print(paste("jitter", ijit, "did not converge"))
@@ -96,7 +90,7 @@ run_jitter <- function(wd, asap.name, njitter, ploption, save.plots, od, plotf){
   }
   
   # results list
-  reslist <- list(objfxn=objfxn, ssbdf=ssbdf)
+  reslist <- list(objfxn=objfxn)
   
   # plot obj fxn results 
   plot_jitter(reslist, asap.rdat, save.plots, od, plotf)
