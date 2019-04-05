@@ -19,31 +19,24 @@ source("plot_jitter.R")
 wd <- "C:\\Users\\chris.legault\\Desktop\\jitter_asap"
 od <- paste0(wd, "\\jitter\\")
 asap.name <- "Simple"
-njitter <- 3
-myjitter <- run_jitter(wd, asap.name, njitter, ploption = "jitter", save.plots = "FALSE", od, plotf="png")
-myfull <- run_jitter(wd, asap.name, njitter, ploption = "full", save.plots = "TRUE", od, plotf="png")
+njitter <- 30
+#sjitter <- run_jitter(wd, asap.name, njitter, ploption = "jitter", save.plots = "TRUE", od, plotf="png")
+sfull <- run_jitter(wd, asap.name, njitter, ploption = "full", save.plots = "TRUE", od, plotf="png")
 ######################################################
 
-######################################################
-# temp comparison of jittered values
-tdf <- matrix(NA, nrow = njitter, ncol = 1156)
-for (ijit in 1:njitter){
-  jname <- paste0(wd, "\\jitter\\jitter", ijit, ".pin")
-  tpin <- read.asap3.pin.file(jname)
-  tpun <- unlist(tpin$dat)
-  tdf[ijit, ] <- tpun
-}
-tdf
-summary(tdf[, 1:20])
-######################################################
 
 ######################################################
-# run fluke
+# fluke
 fluke.dir <- "C:\\Users\\chris.legault\\Desktop\\jitter_asap\\fluke"
 fluke.name <- "F2018_BASE"
+njitter <- 50
+
 wd <- paste0(fluke.dir,"\\myjitter") 
 od <- paste0(wd, "\\jitter\\")
-myjitter <- run_jitter(paste0(fluke.dir,"\\myjitter"), fluke.name, njitter=50, ploption = "jitter", save.plots = "FALSE", od, plotf="png")
-myfull <- run_jitter(paste0(fluke.dir,"\\myfull"), fluke.name, njitter=50, ploption = "full", save.plots = "FALSE", od, plotf="png")
+fjitter <- run_jitter(wd, fluke.name, njitter, ploption = "jitter", save.plots = "FALSE", od, plotf="png")
+
+wd <- paste0(fluke.dir,"\\myfull")
+od <- paste0(wd, "\\jitter\\")
+ffull <- run_jitter(wd, fluke.name, njitter, ploption = "full", save.plots = "FALSE", od, plotf="png")
 ######################################################
 
