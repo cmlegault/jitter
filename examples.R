@@ -32,21 +32,22 @@ fluke.name <- "F2018_BASE"
 njitter <- 50
 
 wdj <- paste0(fluke.dir,"\\myjitter") 
-odj <- paste0(wdf, "\\jitter\\")
+odj <- paste0(wdj, "\\jitter\\")
 fjitter <- run_jitter(wdj, fluke.name, njitter, ploption = "jitter", save.plots = "FALSE", odj, plotf="png")
 which(fjitter$objfxn < fjitter$orig_objfxn)
 # integer(0)
 
 wdf <- paste0(fluke.dir,"\\myfull")
-odf <- paste0(wd, "\\jitter\\")
+odf <- paste0(wdf, "\\jitter\\")
 ffull <- run_jitter(wdf, fluke.name, njitter, ploption = "full", save.plots = "TRUE", odf, plotf="png")
 which(ffull$objfxn < ffull$orig_objfxn)
 # integer(0)
 
 # compare jitter.pins for select params
+njitter <- 40 # had to kill jitter runs early
 myparam <- c("# sel_params[1]:", "# log_Fmult_year1:", "# log_N_year1_devs:", "# log_SR_scaler:")
 np <- length(myparam)
-pname <- paste0(wd,"\\", fluke.name, ".par")
+pname <- paste0(wdj,"\\", fluke.name, ".par")
 asap.pin <- read.asap3.pin.file(pname)
 
 plab <- NULL
