@@ -36,7 +36,7 @@ jitter_asap <- function(in.pin, param.list, jitterfac=0.1){
           Pmean <- (Pmin + Pmax) / 2
           Psigma <- (Pmax - Pmean) / zmax
           zval <- (Pval - Pmean) / Psigma
-          kval <- dnorm(zval)
+          kval <- pnorm(zval)
           temp <- runif(1)
           kjitter <- kval + (jitterfac * ((2 * temp) - 1))
           if (kjitter < 0.0001){
@@ -59,3 +59,41 @@ jitter_asap <- function(in.pin, param.list, jitterfac=0.1){
   
   return(out.pin)
 }
+
+# simple demo of how jitter works
+# uncomment and run the following for different values of Pval, Pmin, and Pmax
+# Pval <- 0.3
+# Pmin <- 0
+# Pmax <- 1
+# 
+# jitterfac <- 0.1
+# zmin <- qnorm(0.001)
+# zmax <- qnorm(0.999)
+# Pmean <- (Pmin + Pmax) / 2
+# Psigma <- (Pmax - Pmean) / zmax
+# zval <- (Pval - Pmean) / Psigma
+# 
+# nr <- 101
+# randval <- seq(0, 1, length.out = nr)
+# res <- rep(NA, nr)
+# for (i in 1:nr){
+#   kval <- pnorm(zval)
+#   temp <- randval[i] # runif(1)
+#   kjitter <- kval + (jitterfac * ((2 * temp) - 1))
+#   if (kjitter < 0.0001){
+#     newval <- Pmin + 0.1 * (Pval - Pmin)
+#   } else if (kjitter > 0.9999){
+#     newval <- Pmax - 0.1 * (Pmax - Pval)
+#   } else {
+#     zjitter <- qnorm(kjitter)
+#     newval <- Pmean + (Psigma * zjitter)
+#   }
+#   # check for jittered value outside bounds
+#   if (newval < Pmin) newval <- Pmin
+#   if (newval > Pmax) newval <- Pmax
+#   res[i] <- newval
+# }
+# plot(randval, res, ylim = c(Pmin, Pmax))
+# abline(h=Pval, col="red")
+# abline(v=0.5, col="blue")
+# 
