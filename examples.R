@@ -81,11 +81,12 @@ for (ijit in 1:njitter){
 pindf
 
 library("ggplot2")
-ggplot(pindf, aes(x=source, y=val)) +
+jitter_pin_plot <- ggplot(pindf, aes(x=source, y=val)) +
   geom_jitter(width = 0.2, height = 0) +
   facet_wrap(~param, scales = "free_y") +
   theme_bw()
 
-
+print(jitter_pin_plot)
+ggsave(jitter_pin_plot, file=paste0(fluke.dir, "\\jitter_pin_plot.png"))
 ######################################################
 
