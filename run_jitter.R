@@ -44,6 +44,7 @@ run_jitter <- function(wd, asap.name, njitter, ploption, save.plots, od, plotf){
   shell("del jitter*.par", mustWork = NA, intern = TRUE)
   shell("del jitter*.pin", mustWork = NA, intern = TRUE)
   shell("del jitter*.rdat", mustWork = NA, intern = TRUE)
+  shell("del jitter_objfxn.png", mustWork = NA, intern = TRUE)
 
   # write orig file with ignore_guesses flag=1 to file [base]_no_init_guesses.dat
   nname <- paste0(asap.name, "_no_init_guesses.dat")
