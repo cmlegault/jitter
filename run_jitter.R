@@ -95,7 +95,7 @@ run_jitter <- function(wd, asap.name, njitter, ploption, save.plots, od, plotf){
   #lowerobjfxn <- which(reslist$objfxn < reslist$orig_objfxn)
   
   # plot obj fxn results 
-  plot_jitter(reslist, asap.rdat, save.plots, od, plotf)
+  plot_jitter(reslist, save.plots, od, plotf)
 
   # change back to original directory
   setwd(orig.dir)
