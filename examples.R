@@ -31,12 +31,61 @@ fluke.dir <- "C:\\Users\\chris.legault\\Desktop\\jitter_asap\\fluke"
 fluke.name <- "F2018_BASE"
 njitter <- 50
 
-wd <- paste0(fluke.dir,"\\myjitter") 
-od <- paste0(wd, "\\jitter\\")
-fjitter <- run_jitter(wd, fluke.name, njitter, ploption = "jitter", save.plots = "FALSE", od, plotf="png")
+wdj <- paste0(fluke.dir,"\\myjitter") 
+odj <- paste0(wdf, "\\jitter\\")
+fjitter <- run_jitter(wdj, fluke.name, njitter, ploption = "jitter", save.plots = "FALSE", odj, plotf="png")
+which(fjitter$objfxn < fjitter$orig_objfxn)
+# integer(0)
 
-wd <- paste0(fluke.dir,"\\myfull")
-od <- paste0(wd, "\\jitter\\")
-ffull <- run_jitter(wd, fluke.name, njitter, ploption = "full", save.plots = "FALSE", od, plotf="png")
+wdf <- paste0(fluke.dir,"\\myfull")
+odf <- paste0(wd, "\\jitter\\")
+ffull <- run_jitter(wdf, fluke.name, njitter, ploption = "full", save.plots = "TRUE", odf, plotf="png")
+which(ffull$objfxn < ffull$orig_objfxn)
+# integer(0)
+
+# compare jitter.pins for select params
+myparam <- c("# sel_params[1]:", "# log_Fmult_year1:", "# log_N_year1_devs:", "# log_SR_scaler:")
+np <- length(myparam)
+pname <- paste0(wd,"\\", fluke.name, ".par")
+asap.pin <- read.asap3.pin.file(pname)
+
+plab <- NULL
+for (ip in 1:np){
+  pval <- which(asap.pin$comments == myparam[ip])
+  thislab <- paste0(myparam[ip], 1:length(asap.pin$dat[[pval]][[1]]))
+  plab <- c(plab, thislab)
+}
+
+pindf <- data.frame()
+ip <- 1:np
+p <- myparam[ip]
+
+pval <- which(asap.pin$comments %in% p)
+thisdf <- data.frame(source="orig", param=plab, jitter=0, val=unlist(asap.pin$dat[pval]))
+pindf <- rbind(pindf, thisdf)
+
+for (ijit in 1:njitter){
+  pnamej <- paste0(odj, "jitter", ijit, ".pin")
+  if (file.exists(pnamej)){
+    asap.pin <- read.asap3.pin.file(pnamej)
+    thisdf <- data.frame(source="jitter", param=plab, jitter=ijit, val=unlist(asap.pin$dat[pval]))
+    pindf <- rbind(pindf, thisdf)
+  }
+  pnamef <- paste0(odf, "jitter", ijit, ".pin")
+  if (file.exists(pnamef)){
+    asap.pin <- read.asap3.pin.file(pnamef)
+    thisdf <- data.frame(source="full", param=plab, jitter=ijit, val=unlist(asap.pin$dat[pval]))
+    pindf <- rbind(pindf, thisdf)
+  }
+}  
+pindf
+
+library("ggplot2")
+ggplot(pindf, aes(x=source, y=val)) +
+  geom_jitter(width = 0.2, height = 0) +
+  facet_wrap(~param, scales = "free_y") +
+  theme_bw()
+
+
 ######################################################
 
