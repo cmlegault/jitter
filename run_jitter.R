@@ -91,7 +91,8 @@ run_jitter <- function(wd, asap.name, njitter, ploption, save.plots, od, plotf){
   }
   
   # results list
-  reslist <- list(objfxn=objfxn)
+  reslist <- list(objfxn=objfxn, orig_objfxn=asap.rdat$like$lk.total)
+  #lowerobjfxn <- which(reslist$objfxn < reslist$orig_objfxn)
   
   # plot obj fxn results 
   plot_jitter(reslist, asap.rdat, save.plots, od, plotf)
