@@ -17,10 +17,11 @@ source("plot_jitter.R")
 ######################################################
 # Simple
 wd <- "C:\\Users\\chris.legault\\Desktop\\jitter_asap"
+od <- paste0(wd, "\\jitter\\")
 asap.name <- "Simple"
 njitter <- 3
-myjitter <- run_jitter(wd, asap.name, njitter, ploption = "jitter", save.plots = "FALSE", od=wd, plotf="png")
-myfull <- run_jitter(wd, asap.name, njitter, ploption = "full", save.plots = "TRUE", od=wd, plotf="png")
+myjitter <- run_jitter(wd, asap.name, njitter, ploption = "jitter", save.plots = "FALSE", od, plotf="png")
+myfull <- run_jitter(wd, asap.name, njitter, ploption = "full", save.plots = "TRUE", od, plotf="png")
 ######################################################
 
 ######################################################
@@ -41,7 +42,8 @@ summary(tdf[, 1:20])
 fluke.dir <- "C:\\Users\\chris.legault\\Desktop\\jitter_asap\\fluke"
 fluke.name <- "F2018_BASE"
 wd <- paste0(fluke.dir,"\\myjitter") 
-myjitter <- run_jitter(paste0(fluke.dir,"\\myjitter"), fluke.name, njitter=50, ploption = "jitter", save.plots = "FALSE", od=wd, plotf="png")
-myfull <- run_jitter(paste0(fluke.dir,"\\myfull"), fluke.name, njitter=50, ploption = "full", save.plots = "FALSE", od=wd, plotf="png")
+od <- paste0(wd, "\\jitter\\")
+myjitter <- run_jitter(paste0(fluke.dir,"\\myjitter"), fluke.name, njitter=50, ploption = "jitter", save.plots = "FALSE", od, plotf="png")
+myfull <- run_jitter(paste0(fluke.dir,"\\myfull"), fluke.name, njitter=50, ploption = "full", save.plots = "FALSE", od, plotf="png")
 ######################################################
 
