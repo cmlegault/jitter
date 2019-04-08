@@ -2,12 +2,12 @@
   # datf = full path and name of dat file
 
 
-read.asap3.dat.file <- function(datf)
-  {
+read.asap3.dat.file <- function(datf){
   
   ### Read in file
   char.lines <- readLines(datf)
-    # Each line of text is a different element in char.lines.  So length(char.lines) == number of rows in datf
+    # Each line of text is a different element in char.lines.  
+    # So length(char.lines) == number of rows in datf
     # Each line of text is a different element in the resulting object
 
     
@@ -16,7 +16,7 @@ read.asap3.dat.file <- function(datf)
     # com.ind = line numbers in char.lines that represent comments
   dat.start <- com.ind[c(which(diff(com.ind)>1), length(com.ind))]
     # dat.start represents the first line number (i.e. the header line) for each data element (M, Fecundity, etc); So the line number corresponds to the heading for the data element, not the beginning of the actual data
-       # the last element in dat.start is the line number of the last line in the dat file, but not sure why it is included
+    # the last element in dat.start is the line number of the last line in the dat file
     # diff takes the difference (in numbers) between two adjacent data elements; So diff(com.ind) shows the number of rows between comments; When diff > 1, there are data between two comment lines
   comments <- char.lines[dat.start]
     # vector of the headers for all data elements; last element in comments is the last line of the data file (which comprises '#')
@@ -63,7 +63,6 @@ read.asap3.dat.file <- function(datf)
         # print(ind);  print(dat.start[ind]);
   dat$sel_ini <- lapply(1:dat$n_fleet_sel_blocks, function(x) matrix(scan(datf, what = double(), skip = dat.start[ind+x], n = 4*(dat$n_ages+6)), dat$n_ages+6, 4, byrow = TRUE))
     ind <- ind + dat$n_fleet_sel_blocks
-    # ??? In the GUI, the matrix for every selectivity block is [nage x 4], but the dat file is different.  Why are there 6 extra rows in each matrix in the dat file? 
   dat$fleet_sel_start_age <- scan(datf, what = integer(), skip = dat.start[ind <- ind + 1], n = dat$n_fleets)
   dat$fleet_sel_end_age <- scan(datf, what = integer(), skip = dat.start[ind <- ind + 1], n = dat$n_fleets)
 
@@ -84,17 +83,14 @@ read.asap3.dat.file <- function(datf)
     
   ### Survey index specifications    
   dat$index_units <- scan(datf, what = integer(), skip = dat.start[ind <- ind + 1], n = dat$n_indices)
-    # ??? So each age is always entered as a separate index? ???
   dat$index_acomp_units <- scan(datf, what = integer(), skip = dat.start[ind <- ind + 1], n = dat$n_indices)
   dat$index_WAA_pointers <- scan(datf, what = integer(), skip = dat.start[ind <- ind + 1], n = dat$n_indices)
   dat$index_month <- scan(datf, what = double(), skip = dat.start[ind <- ind + 1], n = dat$n_indices)
   dat$index_sel_choice <- scan(datf, what = integer(), skip = dat.start[ind <- ind + 1], n = dat$n_indices)
-    # ??? What exactly does this vector do?  How is index selectivity linked to fleet? ???
   dat$index_sel_option <- scan(datf, what = integer(), skip = dat.start[ind <- ind + 1], n = dat$n_indices)
   dat$index_sel_start_age <- scan(datf, what = integer(), skip = dat.start[ind <- ind + 1], n = dat$n_indices)
   dat$index_sel_end_age <- scan(datf, what = integer(), skip = dat.start[ind <- ind + 1], n = dat$n_indices)
   dat$use_index_acomp <- scan(datf, what = integer(), skip = dat.start[ind <- ind + 1], n = dat$n_indices)
-    # ??? When would you or would you not want to estimate proportions at age?  Does this vector really ask whether the index is age-specific and includes more than one age (such that proportions should be calculated)? ???
   dat$use_index <- scan(datf, what = integer(), skip = dat.start[ind <- ind + 1], n = dat$n_indices)
   
   
@@ -105,7 +101,6 @@ read.asap3.dat.file <- function(datf)
     
   ### Survey index data matrices
     # Columns are: [Year, Value, CV, 1:nage, Sample Size]
-    # ??? When do 1:nage columns have values == 1 versus values == 0? ??? 
   dat$IAA_mats <- lapply(1:dat$n_indices, function(x) matrix(scan(datf, what = double(), skip = dat.start[ind+x], n = dat$n_years*(dat$n_ages+4)), dat$n_years, dat$n_ages+4, byrow = TRUE))
     ind <- ind + dat$n_indices
 
@@ -130,7 +125,6 @@ read.asap3.dat.file <- function(datf)
   dat$lambda_discard <- scan(datf, what = double(), skip = dat.start[ind <- ind + 1], n = dat$n_fleets)
   dat$catch_cv <- matrix(scan(datf, what = double(), skip = dat.start[ind <- ind + 1], n = dat$n_years*dat$n_fleets), dat$n_years, dat$n_fleets, byrow = TRUE)
   dat$discard_cv <- matrix(scan(datf, what = double(), skip = dat.start[ind <- ind + 1], n = dat$n_years*dat$n_fleets), dat$n_years, dat$n_fleets, byrow = TRUE)
-    # ??? For mackerel, why does the CV for fleet 1 discards == 0.01 and not 0 when there are not any discards? (and discard option is not even illuminated within Lambdas-1 tab)? ???
   dat$catch_Neff <- matrix(scan(datf, what = double(), skip = dat.start[ind <- ind + 1], n = dat$n_years*dat$n_fleets), dat$n_years, dat$n_fleets, byrow = TRUE)
   dat$discard_Neff <- matrix(scan(datf, what = double(), skip = dat.start[ind <- ind + 1], n = dat$n_years*dat$n_fleets), dat$n_years, dat$n_fleets, byrow = TRUE)
   # .... related to fishing mortality
@@ -138,7 +132,7 @@ read.asap3.dat.file <- function(datf)
   dat$cv_F1 <- scan(datf, what = double(), skip = dat.start[ind <- ind + 1], n = dat$n_fleets)
   dat$lambda_F_devs <- scan(datf, what = double(), skip = dat.start[ind <- ind + 1], n = dat$n_fleets)
   dat$cv_F_devs <- scan(datf, what = double(), skip = dat.start[ind <- ind + 1], n = dat$n_fleets)
-  # .... related to abundnace (and recruitment again)
+  # .... related to abundance (and recruitment again)
   dat$lambda_N1_devs <- scan(datf, what = double(), skip = dat.start[ind <- ind + 1], n = 1)
   dat$cv_N1_devs <- scan(datf, what = double(), skip = dat.start[ind <- ind + 1], n = 1)
   dat$lambda_rec_devs <- scan(datf, what = double(), skip = dat.start[ind <- ind + 1], n = 1)
@@ -152,17 +146,16 @@ read.asap3.dat.file <- function(datf)
   dat$cv_steepness <- scan(datf, what = double(), skip = dat.start[ind <- ind + 1], n = 1)
   dat$lambda_SR_scalar <- scan(datf, what = double(), skip = dat.start[ind <- ind + 1], n = 1)
   dat$cv_SR_scalar <- scan(datf, what = double(), skip = dat.start[ind <- ind + 1], n = 1)  
-    # SR_scalar could be unexploited stock size (SSB) or unexploited recruitment
 
   
   ### Initial guesses
   dat$N1_flag <- scan(datf, what = integer(), skip = dat.start[ind <- ind + 1], n = 1)
-    # ??? Are the possible options 1 and 2 or 0 and 1?  Am I correct that 1 represents deviations from exponential decline? ???
+    # 1 for devs from exponential decline, 2 for devs from initial guesses
   dat$N1_ini <- scan(datf, what = double(), skip = dat.start[ind <- ind + 1], n = dat$n_ages)
   dat$F1_ini <- scan(datf, what = double(), skip = dat.start[ind <- ind + 1], n = dat$n_fleets)
   dat$q_ini <- scan(datf, what = double(), skip = dat.start[ind <- ind + 1], n = dat$n_indices)
   dat$SR_scalar_type <- scan(datf, what = integer(), skip = dat.start[ind <- ind + 1], n = 1)
-    # ??? Are the possible options 0 and 1?  Am I correct that 0 represents unexploited SSB? ???
+    # 1 for R0, 0 for SSB0
   dat$SR_scalar_ini <- scan(datf, what = double(), skip = dat.start[ind <- ind + 1], n = 1)
   dat$steepness_ini <- scan(datf, what = double(), skip = dat.start[ind <- ind + 1], n = 1)
   dat$Fmax <- scan(datf, what = double(), skip = dat.start[ind <- ind + 1], n = 1)
@@ -172,26 +165,25 @@ read.asap3.dat.file <- function(datf)
   ### Projections
   dat$do_proj <- scan(datf, what = integer(), skip = dat.start[ind <- ind + 1], n = 1)
   dat$dir_fleet <- scan(datf, what = integer(), skip = dat.start[ind <- ind + 1], n = dat$n_fleets)
-    # ??? What is 'fleet directed flag' (on the fleets tab)? ???
   dat$nfinalyear <- scan(datf, what = integer(), skip = dat.start[ind <- ind + 1], n = 1)
   # .... number of years in projections
   n <- (dat$nfinalyear-dat$year1)-dat$n_years+1
   # .... projection data by year (if n>0)  
   if(n>0) { dat$proj_ini <- matrix(scan(datf, what = double(), skip = dat.start[ind <- ind + 1], n = n*5), n, 5, byrow = TRUE) }  else 
       dat$proj_ini <- matrix(nrow = 0, ncol = 5)
-    # ??? is this 'else' statement correct?  I do not have any examples that I can use to test it. ???
+    # be careful here, may cause problems writing because no lines when final year of projection=last year in assessment
 
     
   ### MCMC
   dat$doMCMC <- scan(datf, what = integer(), skip = dat.start[ind <- ind + 1], n = 1)
   dat$MCMC_nyear_opt <- scan(datf, what = integer(), skip = dat.start[ind <- ind + 1], n = 1)
-    # ??? Does 0 = 'use final year in stock' and 1 = 'use final year plus one'? ???
+    # 0=output nyear NAA, 1=output nyear+1 NAA
   dat$MCMC_nboot <- scan(datf, what = integer(), skip = dat.start[ind <- ind + 1], n = 1)
   dat$MCMC_nthin <- scan(datf, what = integer(), skip = dat.start[ind <- ind + 1], n = 1)
   dat$MCMC_nseed <- scan(datf, what = integer(), skip = dat.start[ind <- ind + 1], n = 1)
   # .... agepro  
   dat$fill_R_opt <- scan(datf, what = integer(), skip = dat.start[ind <- ind + 1], n = 1)
-    # ??? What are the possible values? ???
+    # 1=SR, 2=geomean
   dat$R_avg_start <- scan(datf, what = integer(), skip = dat.start[ind <- ind + 1], n = 1)
   dat$R_avg_end <- scan(datf, what = integer(), skip = dat.start[ind <- ind + 1], n = 1)
 
