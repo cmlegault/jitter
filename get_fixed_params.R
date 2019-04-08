@@ -14,17 +14,17 @@ GetFixedParams <- function(asap.dat){
   for (iblock in 1:asap$n_fleet_sel_blocks){
     sel_ini_block <- sel_ini[[iblock]]
     if (sel_block_option[iblock] == 1){  # by age
-      counter <- counter + 1:nages
+      counter <- max(counter) + 1:nages
       temp <- rep("estimated", nages)
       temp[sel_ini_block[1:nages, 2] <= 0] <- "fixed"
     }
     if (sel_block_option[iblock] == 2){  # single logistic
-      counter <- counter + 1:2
+      counter <- max(counter) + 1:2
       temp <- rep("estimated", 2)
       temp[sel_ini_block[(nages+1):(nages+2), 2] <= 0] <- "fixed"
     }
     if (sel_block_option[iblock] == 3){  # double logistic
-      counter <- counter + 1:4
+      counter <- max(counter) + 1:4
       temp <- rep("estimated", 4)
       temp[sel_ini_block[(nages+3):(nages+6), 2] <= 0] <- "fixed"
     }
