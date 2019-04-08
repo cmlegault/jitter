@@ -1,9 +1,9 @@
-# jitter_asap
+# JitterASAP
 # changes .pin file to use random restarts
   # full approach selects from uniform distribution over full range of parameters
   # jitter approach based on SS3.30
 
-jitter_asap <- function(in.pin, param.list, jitterfac=0.1){
+JitterASAP <- function(in.pin, param.list, jitterfac=0.1){
   
   out.pin <- in.pin
   

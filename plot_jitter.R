@@ -1,7 +1,7 @@
-# plot_jitter
+# PlotJitter
 # make plot from result of jitter analysis
 
-plot_jitter <- function(reslist, save.plots, od, plotf, showtitle=FALSE){
+PlotJitter <- function(reslist, save.plots, od, plotf, showtitle){
   
   nna <- length(reslist$objfxn[is.na(reslist$objfxn)])
   neq <- length(which(reslist$objfxn == reslist$orig_objfxn))

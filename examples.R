@@ -19,9 +19,9 @@ source("plot_jitter.R")
 wd <- "C:\\Users\\chris.legault\\Desktop\\jitter_asap"
 od <- paste0(wd, "\\jitter\\")
 asap.name <- "Simple"
-njitter <- 30
-#sjitter <- run_jitter(wd, asap.name, njitter, ploption = "jitter", save.plots = "TRUE", od, plotf="png")
-sfull <- run_jitter(wd, asap.name, njitter, ploption = "full", save.plots = "TRUE", od, plotf="png")
+njitter <- 3
+#sjitter <- RunJitter(wd, asap.name, njitter, ploption = "jitter", save.plots = "TRUE", od, plotf="png")
+sfull <- RunJitter(wd, asap.name, njitter, ploption = "full", save.plots = "TRUE", od, plotf="png")
 ######################################################
 
 
@@ -33,13 +33,13 @@ njitter <- 50
 
 wdj <- paste0(fluke.dir,"\\myjitter") 
 odj <- paste0(wdj, "\\jitter\\")
-fjitter <- run_jitter(wdj, fluke.name, njitter, ploption = "jitter", save.plots = "FALSE", odj, plotf="png")
+fjitter <- RunJitter(wdj, fluke.name, njitter, ploption = "jitter", save.plots = "FALSE", odj, plotf="png")
 which(fjitter$objfxn < fjitter$orig_objfxn)
 # integer(0)
 
 wdf <- paste0(fluke.dir,"\\myfull")
 odf <- paste0(wdf, "\\jitter\\")
-ffull <- run_jitter(wdf, fluke.name, njitter, ploption = "full", save.plots = "TRUE", odf, plotf="png")
+ffull <- RunJitter(wdf, fluke.name, njitter, ploption = "full", save.plots = "TRUE", odf, plotf="png")
 which(ffull$objfxn < ffull$orig_objfxn)
 # integer(0)
 

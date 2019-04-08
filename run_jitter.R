@@ -1,6 +1,6 @@
 # function to run jitter asap
 
-run_jitter <- function(wd, asap.name, njitter, ploption, save.plots, od=paste0(wd,"\\jitter\\"), plotf){
+RunJitter <- function(wd, asap.name, njitter, ploption, save.plots, od=paste0(wd,"\\jitter\\"), plotf, showtitle=FALSE){
   
   # error checks for missing files 
   if (!file.exists(paste0(wd, "\\", asap.name, ".dat"))){
@@ -55,15 +55,15 @@ run_jitter <- function(wd, asap.name, njitter, ploption, save.plots, od=paste0(w
   # create base param.list using 
   # ploption = "full" for full range of parameters or 
   # ploption = "jitter" for values near parameter estimates
-  param.list <- create_param_list(asap.pin)
+  param.list <- CreateParamList(asap.pin)
   param.list$type <- rep(ploption, length(param.list$type))
 
   # which parameters are not estimated
-  fixed_params <- get_fixed_params(asap.dat)
+  fixed_params <- GetFixedParams(asap.dat)
   
-  # check to make sure same number of parameters in par file and returned by get_fixed_params
+  # check to make sure same number of parameters in par file and returned by GetFixedParams
   if (length(fixed_params[,1]) != length(param.list$type)){
-    return("ERROR: different number of parameters in .par and calculated by get_fixed_params function")
+    return("ERROR: different number of parameters in .par and calculated by GetFixedParams function")
   }
   
   # parameters not estimated stay at original values
@@ -73,7 +73,7 @@ run_jitter <- function(wd, asap.name, njitter, ploption, save.plots, od=paste0(w
   objfxn <- rep(NA, njitter)
   for (ijit in 1:njitter){
     jname <- paste0("jitter", ijit, ".pin")
-    asap.pin.jit <- jitter_asap(asap.pin, param.list)
+    asap.pin.jit <- JitterASAP(asap.pin, param.list)
     WriteASAP3PinFile(jname, asap.pin.jit)
     shell("del asap3.rdat", intern = TRUE)
     shell("del asap3.std", intern = TRUE)
@@ -96,7 +96,7 @@ run_jitter <- function(wd, asap.name, njitter, ploption, save.plots, od=paste0(w
   # lowerobjfxn <- which(reslist$objfxn < reslist$orig_objfxn)
   
   # plot obj fxn results 
-  plot_jitter(reslist, save.plots, od, plotf)
+  PlotJitter(reslist, save.plots, od, plotf, showtitle)
 
   # change back to original directory
   setwd(orig.dir)

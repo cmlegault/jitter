@@ -1,7 +1,7 @@
-# get_fixed_params from asap.rdat object
+# GetFixedParams from asap.rdat object
 # returns data frame of parameters as either "fixed" or "estimated"
 
-get_fixed_params <- function(asap){
+GetFixedParams <- function(asap){
   names(asap$dat)
   counter <- 0
   res <- data.frame()
