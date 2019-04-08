@@ -1,6 +1,8 @@
-##### Function to read ASAP 3 dat file into R (provided by Tim Miller but slightly modified)
-  # datf = full path and name of dat file
-
+#' ReadASAP3DatFile
+#' 
+#' Read ASAP 3 dat file into R (thanks to Tim Miller for providing original version).
+#' @param datf full path and name of dat file (including .dat suffix)
+#' @export
 
 ReadASAP3DatFile <- function(datf){
   

@@ -21,7 +21,7 @@ od <- paste0(wd, "\\jitter\\")
 asap.name <- "Simple"
 njitter <- 3
 #sjitter <- RunJitter(wd, asap.name, njitter, ploption = "jitter", save.plots = "TRUE", od, plotf="png")
-sfull <- RunJitter(wd, asap.name, njitter, ploption = "full", save.plots = "TRUE", od, plotf="png")
+sfull <- RunJitter(wd, asap.name, njitter, ploption = "full", save.plots = "TRUE", od, plotf="png", showtitle=TRUE)
 ######################################################
 
 

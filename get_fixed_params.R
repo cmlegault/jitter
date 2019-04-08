@@ -1,5 +1,8 @@
-# GetFixedParams from asap.rdat object
-# returns data frame of parameters as either "fixed" or "estimated"
+#' GetFixedParams
+#'
+#' Returns data frame of parameters for a given ASAP run as either "fixed" or "estimated."
+#' @param asap rdat asap object
+#' @export
 
 GetFixedParams <- function(asap){
   names(asap$dat)

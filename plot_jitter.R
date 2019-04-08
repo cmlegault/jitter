@@ -1,5 +1,12 @@
-# PlotJitter
-# make plot from result of jitter analysis
+#' PlotJitter
+#' 
+#' Plot results of jitter analysis, objective function values by realization with line for original value.
+#' @param reslist result of RunJitter function containing objective function values by realization and original value
+#' @param save.plots saves indivdual plots 
+#' @param od directory where plot will be saved
+#' @param plotf format for individual plots 
+#' @param showtitle option to add title for plot providing number of realizations better than original, equal to original, and not converged
+#' @export
 
 PlotJitter <- function(reslist, save.plots, od, plotf, showtitle){
   

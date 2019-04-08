@@ -1,5 +1,8 @@
-# ReadASAP3PinFile
-# modeled after ReadASAP3DatFile function, uses list of lists approach regardless of number of values
+#' ReadASAP3PinFile
+#' 
+#' Read ASAP 3 pin (=par) file into R.
+#' @param pinf full path and name of pin file (including .pin or .par suffix) 
+#' @export
 
 ReadASAP3PinFile <- function(pinf){
   

@@ -1,5 +1,10 @@
-# Function to write ASAP 3 dat file (modified from Tim Miller's text_datwrite.R file)
-
+#' WriteASAP3DatFile
+#' 
+#' Function to write ASAP 3 dat file (modified from Tim Miller's text_datwrite.R file).
+#' @param fname full directory and file name to be created (including .dat suffix)
+#' @param dat.object R object containing all the necessary information
+#' @param header.text text put run description line in input file
+#' @export
 
 WriteASAP3DatFile <- function(fname,dat.object,header.text){
   # fname <- 'bsb.dat'; dat.object <- asap.dat; header.text <- c('Base ASAP run')

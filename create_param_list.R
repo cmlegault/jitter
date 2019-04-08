@@ -1,5 +1,8 @@
-# create the upper and lower limits for each parameter based on ASAP tpl bounded parameter values
-# uses list of lists appraoch regardless of number of values
+#' CreateParamList
+#' 
+#' Provides the upper and lower limits for each parameter based on ASAP tpl bounded parameter values.
+#' @param asap.pin.obj contains data and comments from an ASAP3 pin file
+#' @export
 
 CreateParamList <- function(asap.pin.obj){
   

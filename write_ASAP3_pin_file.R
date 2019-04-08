@@ -1,5 +1,9 @@
-# WriteASAP3PinFile
-# based on write.asap3.dat.file, uses list of lists approach regardless of number of values
+#' WriteASAP3PinFile
+#' 
+#' Function to write ASAP 3 pin (=par) file
+#' @param fname full directory and file name to be created (including .pin suffix)
+#' @param pin.object R object containing all the necessary information
+#' @export
 
 WriteASAP3PinFile <- function(fname, pin.object){
   # fname <- 'jitter.pin'; pin.object <- asap3.pin.obj
