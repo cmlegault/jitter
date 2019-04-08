@@ -48,7 +48,7 @@ njitter <- 40 # had to kill jitter runs early
 myparam <- c("# sel_params[1]:", "# log_Fmult_year1:", "# log_N_year1_devs:", "# log_SR_scaler:")
 np <- length(myparam)
 pname <- paste0(wdj,"\\", fluke.name, ".par")
-asap.pin <- read.asap3.pin.file(pname)
+asap.pin <- ReadASAP3PinFile(pname)
 
 plab <- NULL
 for (ip in 1:np){
@@ -68,13 +68,13 @@ pindf <- rbind(pindf, thisdf)
 for (ijit in 1:njitter){
   pnamej <- paste0(odj, "jitter", ijit, ".pin")
   if (file.exists(pnamej)){
-    asap.pin <- read.asap3.pin.file(pnamej)
+    asap.pin <- ReadASAP3PinFile(pnamej)
     thisdf <- data.frame(source="jitter", param=plab, jitter=ijit, val=unlist(asap.pin$dat[pval]))
     pindf <- rbind(pindf, thisdf)
   }
   pnamef <- paste0(odf, "jitter", ijit, ".pin")
   if (file.exists(pnamef)){
-    asap.pin <- read.asap3.pin.file(pnamef)
+    asap.pin <- ReadASAP3PinFile(pnamef)
     thisdf <- data.frame(source="full", param=plab, jitter=ijit, val=unlist(asap.pin$dat[pval]))
     pindf <- rbind(pindf, thisdf)
   }

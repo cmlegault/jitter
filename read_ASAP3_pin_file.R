@@ -1,7 +1,7 @@
-# read.asap3.pin.file
-# modeled after read.asap3.dat.file function, uses list of lists approach regardless of number of values
+# ReadASAP3PinFile
+# modeled after ReadASAP3DatFile function, uses list of lists approach regardless of number of values
 
-read.asap3.pin.file <- function(pinf){
+ReadASAP3PinFile <- function(pinf){
   
   char.lines <- readLines(pinf)
   com.ind <- which(substring(char.lines,1,1) == "#")

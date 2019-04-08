@@ -27,9 +27,9 @@ run_jitter <- function(wd, asap.name, njitter, ploption, save.plots, od=paste0(w
   rname <- paste0(asap.name, ".rdat")
   pname <- paste0(asap.name, ".par")
   
-  asap.dat <- read.asap3.dat.file(fname)
+  asap.dat <- ReadASAP3DatFile(fname)
   asap.rdat <- dget(rname)
-  asap.pin <- read.asap3.pin.file(pname)
+  asap.pin <- ReadASAP3PinFile(pname)
 
   # check for jitter subdirectory, create if necessary
   if (!dir.exists("./jitter")){
@@ -50,7 +50,7 @@ run_jitter <- function(wd, asap.name, njitter, ploption, save.plots, od=paste0(w
   nname <- paste0(asap.name, "_no_init_guesses.dat")
   no.init.guesses <- asap.dat
   no.init.guesses$dat$ignore_guesses <-  1
-  write.asap3.dat.file(nname, no.init.guesses, "no initial guesses")
+  WriteASAP3DatFile(nname, no.init.guesses, "no initial guesses")
   
   # create base param.list using 
   # ploption = "full" for full range of parameters or 
@@ -74,7 +74,7 @@ run_jitter <- function(wd, asap.name, njitter, ploption, save.plots, od=paste0(w
   for (ijit in 1:njitter){
     jname <- paste0("jitter", ijit, ".pin")
     asap.pin.jit <- jitter_asap(asap.pin, param.list)
-    write.asap3.pin.file(jname, asap.pin.jit)
+    WriteASAP3PinFile(jname, asap.pin.jit)
     shell("del asap3.rdat", intern = TRUE)
     shell("del asap3.std", intern = TRUE)
     shell(paste("ASAP3.exe -ind", nname, "-ainp", jname), intern=TRUE)

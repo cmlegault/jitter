@@ -1,7 +1,7 @@
-# write.asap3.pin.file
+# WriteASAP3PinFile
 # based on write.asap3.dat.file, uses list of lists approach regardless of number of values
 
-write.asap3.pin.file <- function(fname, pin.object){
+WriteASAP3PinFile <- function(fname, pin.object){
   # fname <- 'jitter.pin'; pin.object <- asap3.pin.obj
   
   # Create file with one comment

@@ -2,7 +2,7 @@
   # datf = full path and name of dat file
 
 
-read.asap3.dat.file <- function(datf){
+ReadASAP3DatFile <- function(datf){
   
   ### Read in file
   char.lines <- readLines(datf)
@@ -213,6 +213,6 @@ read.asap3.dat.file <- function(datf){
 
   }
 
-# datf <- c("P:/Mackerel/AssessmentModels/ASAP/ASAP_V3_Check_WAA.DAT");   asap.dat <- read.asap3.dat.file(datf)
+# datf <- c("P:/Mackerel/AssessmentModels/ASAP/ASAP_V3_Check_WAA.DAT");   asap.dat <- ReadASAP3DatFile(datf)
 
 
