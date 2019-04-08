@@ -1,5 +1,5 @@
 # read.asap3.pin.file
-# modeled after read.asap3.dat.file function
+# modeled after read.asap3.dat.file function, uses list of lists approach regardless of number of values
 
 read.asap3.pin.file <- function(pinf){
   
