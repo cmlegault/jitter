@@ -4,12 +4,12 @@
 # rem to set working directory to code directory for now
 # won't need to do this once part of ASAPplots
 
-source("Read.ASAP3.dat.file.R")
-source("Read.ASAP3.pin.file.R")
+source("read_ASAP3_dat_file.R")
+source("read_ASAP3_pin_file.R")
 source("create_param_list.R")
 source("get_fixed_params.R")
-source("Write.ASAP3.dat.file.R")
-source("Write.ASAP3.pin.file.R")
+source("write_ASAP3_dat_file.R")
+source("write_ASAP3_pin_file.R")
 source("jitter_asap.R")
 source("run_jitter.R")
 source("plot_jitter.R")
