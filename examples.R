@@ -91,3 +91,18 @@ print(jitter_pin_plot)
 ggsave(jitter_pin_plot, file=paste0(fluke.dir, "\\jitter_pin_plot.png"))
 ######################################################
 
+######################################################
+# groundfish
+base.dir <- "C:\\Users\\chris.legault\\Desktop\\jitter_asap\\"
+njitter <- 100
+ploption <- "full"
+
+gstocks <- c("gomcod", "gomhaddock", "pollock", "redfish", "snemawinter", "snemayt", "whitehake")
+nstocks <- length(gstocks)
+gres <- list()
+gname <- "base"
+
+for (istock in 1:nstocks){
+  wd <- paste0(base.dir, gstocks[istock])
+  gres[[istock]] <- RunJitter(wd, gname, njitter=3, ploption)  
+}
