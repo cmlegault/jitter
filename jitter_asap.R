@@ -1,7 +1,7 @@
 # jitter_asap
 # changes .pin file to use random restarts
-# full approach selects from uniform distribution over full range of parameters
-# jitter approach based on SS3.30
+  # full approach selects from uniform distribution over full range of parameters
+  # jitter approach based on SS3.30
 
 jitter_asap <- function(in.pin, param.list, jitterfac=0.1){
   
@@ -62,9 +62,9 @@ jitter_asap <- function(in.pin, param.list, jitterfac=0.1){
 
 # simple demo of how jitter works
 # uncomment and run the following for different values of Pval, Pmin, and Pmax
-# Pval <- 0.3
-# Pmin <- 0
-# Pmax <- 1
+# Pval <- 0.3  # estimated parameter value
+# Pmin <- 0    # lower bound for parameter
+# Pmax <- 1    # upper bound for parameter
 # 
 # jitterfac <- 0.1
 # zmin <- qnorm(0.001)
