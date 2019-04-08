@@ -1,6 +1,6 @@
-# code to run jitter asap
+# function to run jitter asap
 
-run_jitter <- function(wd, asap.name, njitter, ploption, save.plots, od, plotf){
+run_jitter <- function(wd, asap.name, njitter, ploption, save.plots, od=paste0(wd,"\\jitter\\"), plotf){
   
   # error checks for missing files 
   if (!file.exists(paste0(wd, "\\", asap.name, ".dat"))){
@@ -54,7 +54,7 @@ run_jitter <- function(wd, asap.name, njitter, ploption, save.plots, od, plotf){
   
   # create base param.list using 
   # ploption = "full" for full range of parameters or 
-  # ploption = "jitter" for solution plus minus 0.1
+  # ploption = "jitter" for values near parameter estimates
   param.list <- create_param_list(asap.pin)
   param.list$type <- rep(ploption, length(param.list$type))
 
@@ -92,7 +92,8 @@ run_jitter <- function(wd, asap.name, njitter, ploption, save.plots, od, plotf){
   
   # results list
   reslist <- list(objfxn=objfxn, orig_objfxn=asap.rdat$like$lk.total)
-  #lowerobjfxn <- which(reslist$objfxn < reslist$orig_objfxn)
+  # to determine which realizations had lower objective function value than original:
+  # lowerobjfxn <- which(reslist$objfxn < reslist$orig_objfxn)
   
   # plot obj fxn results 
   plot_jitter(reslist, save.plots, od, plotf)
