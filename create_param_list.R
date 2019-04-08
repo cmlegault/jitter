@@ -1,4 +1,5 @@
 # create the upper and lower limits for each parameter based on ASAP tpl bounded parameter values
+# uses list of lists appraoch regardless of number of values
 
 create_param_list <- function(asap.pin.obj){
   
@@ -7,7 +8,7 @@ create_param_list <- function(asap.pin.obj){
   np <- length(comments)
   
   param.list <- list()
-  param.list$type <- rep(NA, np)
+  param.list$type <- rep(NA, np) # placeholder, will be filled in later
   param.list$lowerbound <- list()
   param.list$upperbound <- list()
 
