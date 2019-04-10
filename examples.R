@@ -19,6 +19,7 @@ library("ASAPplots")
 library("ggplot2")
 
 # need to work on README.md to describe what was done and how to use functions
+# consider making jitter directory distinguish jitter vs full ploption
 
 ######################################################
 # Simple - drop this example???
