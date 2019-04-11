@@ -140,5 +140,11 @@ for (istock in 1:nstocks){
 # use the following line to get it back
 # gres <- dget("dputgres.Rdat")
 
-# convert gres into data.frames for use in ggplot?? or should I use base plot and modify PlotJitter function???
-PlotJitter(gres[[1]], FALSE, NULL, NULL, FALSE, 1E+5)
+# get plots with ymaxlimit option turned on when necessary
+PlotJitter(gres[[1]], FALSE, NULL, NULL, FALSE, 8000)
+PlotJitter(gres[[2]], FALSE, NULL, NULL, FALSE)
+PlotJitter(gres[[3]], FALSE, NULL, NULL, FALSE, 14400)
+PlotJitter(gres[[4]], FALSE, NULL, NULL, FALSE, 20530)
+PlotJitter(gres[[5]], FALSE, NULL, NULL, FALSE)
+PlotJitter(gres[[6]], FALSE, NULL, NULL, FALSE)
+PlotJitter(gres[[7]], FALSE, NULL, NULL, FALSE)
