@@ -17,6 +17,7 @@ source("plot_jitter.R")
 # once put jitter in ASAPplots
 library("ASAPplots")
 library("ggplot2")
+library("dplyr")
 
 # need to work on README.md to describe what was done and how to use functions
 
@@ -113,10 +114,12 @@ for (istock in 1:nstocks){
   gres[[istock]] <- RunJitter(wd, gname, njitter, ploption) 
 }
 
-# GOM cod and haddock 
-# when ran full case - both did well with just a few wacko results (objfxn vals >> orig)
+# GOM cod - a few diff objfxn vals with one wacko one, fair number of NA
+
+# GOM haddock - solid results with only one slightly diff objfxn val and 2 NA
+
+# when ran full case - both GOM cod and haddock did well with just a few wacko results
 #####################################################################################
-### TODO need to rerun GOM cod and haddock with "jitter" instead of "full"
 ### TODO need to move full jitter into sub dir so doesn't conflict with jitter runs
 #####################################################################################
 
@@ -127,11 +130,14 @@ for (istock in 1:nstocks){
 
 # snemawinter - 2 diff solutions with high freq (objfxn change 400!), see how diff the SSB trends are
 
-# snemayt - rock solid solution almost all same value, only four did not converge (run full?)
+# snemayt - rock solid solution almost all same value, only four did not converge 
 
-# white hake - rock solid solution (run full?)
+# white hake - rock solid solution 
 
-dput(gres, file="dputgres.Rdat", control = "keepNA") # to make sure don't lose results
+# save gres
+# setwd(base.dir)
+# dput(gres, file="dputgres.Rdat", control = "keepNA") # to make sure don't lose results
 # use the following line to get it back
-# gres <- dget("dputgres.Rdat)
+# gres <- dget("dputgres.Rdat")
 
+# convert gres into data.frames for use in ggplot?? or should I use base plot and modify PlotJitter function???
