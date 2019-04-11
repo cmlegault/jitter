@@ -20,7 +20,6 @@ library("ggplot2")
 library("dplyr")
 
 # need to work on README.md to describe what was done and how to use functions
-# consider making jitter directory distinguish jitter vs full ploption
 
 ######################################################
 # Simple - drop this example???
@@ -142,3 +141,4 @@ for (istock in 1:nstocks){
 # gres <- dget("dputgres.Rdat")
 
 # convert gres into data.frames for use in ggplot?? or should I use base plot and modify PlotJitter function???
+PlotJitter(gres[[1]], FALSE, NULL, NULL, FALSE, 1E+5)
