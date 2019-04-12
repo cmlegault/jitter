@@ -144,10 +144,15 @@ setwd(base.dir)
 gres <- dget("dputgres.Rdat")
 
 # get plots with ymaxlimit option turned on when necessary
-PlotJitter(gres[[1]], FALSE, NULL, NULL, FALSE, 8000)
-PlotJitter(gres[[2]], FALSE, NULL, NULL, FALSE)
-PlotJitter(gres[[3]], FALSE, NULL, NULL, FALSE, 14400)
-PlotJitter(gres[[4]], FALSE, NULL, NULL, FALSE, 20530)
-PlotJitter(gres[[5]], FALSE, NULL, NULL, FALSE)
-PlotJitter(gres[[6]], FALSE, NULL, NULL, FALSE)
-PlotJitter(gres[[7]], FALSE, NULL, NULL, FALSE)
+# PlotJitter params are reslist, save.plots, od, plotf, showtitle, ymaxlimit=NULL
+myymaxs <- c(8000, NA, 14400, 20530, NA, NA, NA)
+mydir <- "C:\\Users\\chris.legault\\Desktop\\qqq\\jitter\\figs\\"
+for (istock in 1:nstocks){
+  PlotJitter(gres[[istock]], TRUE, base.dir, 'png', FALSE)
+  shell(paste0("copy jitter_objfxn.png ", mydir, "jitter_objfxn_", gstocks[istock], ".png"))
+  if (!is.na(myymaxs[istock])){
+    PlotJitter(gres[[istock]], TRUE, base.dir, 'png', FALSE, myymaxs[istock])
+    shell(paste0("copy jitter_objfxn.png ", mydir, "jitter_objfxn_", gstocks[istock], "_ymaxlimit.png"))
+  }
+}
+
