@@ -145,6 +145,8 @@ gres <- dget("dputgres.Rdat")
 
 # get plots with ymaxlimit option turned on when necessary
 # PlotJitter params are reslist, save.plots, od, plotf, showtitle, ymaxlimit=NULL
+# used the following line changing istock values one at a time to determine myymaxs values
+# PlotJitter(gres[[istock]], FALSE, base.dir, 'png', FALSE)
 myymaxs <- c(8000, NA, 14400, 20530, NA, NA, NA)
 mydir <- "C:\\Users\\chris.legault\\Desktop\\qqq\\jitter\\figs\\"
 for (istock in 1:nstocks){
@@ -155,4 +157,33 @@ for (istock in 1:nstocks){
     shell(paste0("copy jitter_objfxn.png ", mydir, "jitter_objfxn_", gstocks[istock], "_ymaxlimit.png"))
   }
 }
+graphics.off()
 
+# compare some SSB time series for original and alternative solutions
+ii <- 1:nstocks
+irep <- 1:njitter
+istock <- ii[gstocks == "snemawinter"]
+gdf <- data.frame()
+objvals <- unique(gres[[istock]]$objfxn)
+objvals <- objvals[!is.na(objvals)]
+nobjvals <- length(objvals)
+for (ival in 1:nobjvals){
+  myrep <- base::sample(irep[which(gres[[istock]]$objfxn == objvals[ival])], 1)
+  asap <- dget(paste0(base.dir, gstocks[istock], "\\jitter\\jitter", myrep, ".rdat"))
+  thisdf <- data.frame(stock = gstocks[istock], 
+                       rep = as.factor(myrep),
+                       objfxn = objvals[ival],
+                       Year = seq(asap$parms$styr, asap$parms$endyr),
+                       SSB = asap$SSB)
+  gdf <- rbind(gdf, thisdf)
+}
+
+p1 <- ggplot(gdf, aes(x=Year, y=SSB, color=rep)) +
+  geom_point() +
+  geom_line() +
+  ggtitle(gstocks[istock]) +
+  annotate("text", x=2010, y=20000, label="rep     objfxn") +
+  annotate("text", x=2010, y=19000, label=paste0(gdf$rep[1], " = ", gdf$objfxn[1])) +
+  annotate("text", x=2010, y=18000, label=paste0(gdf$rep[72], " = ", gdf$objfxn[72])) +
+  theme_bw()
+print(p1)
