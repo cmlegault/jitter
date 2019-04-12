@@ -106,13 +106,15 @@ ploption <- "jitter"
 
 gstocks <- c("gomcod", "gomhaddock", "pollock", "redfish", "snemawinter", "snemayt", "whitehake")
 nstocks <- length(gstocks)
-gres <- list()
 gname <- "base" # did not have to do this, just an easier way of running through many cases in a loop
 
-for (istock in 1:nstocks){  
-  wd <- paste0(base.dir, gstocks[istock])
-  gres[[istock]] <- RunJitter(wd, gname, njitter, ploption) 
-}
+# this section of code takes a long time to run, so commented out
+# gres <- list()
+# 
+# for (istock in 1:nstocks){  
+#   wd <- paste0(base.dir, gstocks[istock])
+#   gres[[istock]] <- RunJitter(wd, gname, njitter, ploption) 
+# }
 
 # GOM cod - a few diff objfxn vals with one wacko one, fair number of NA
 
@@ -135,10 +137,11 @@ for (istock in 1:nstocks){
 # white hake - rock solid solution 
 
 # save gres
-# setwd(base.dir)
+setwd(base.dir)
+# use the following line to save gres for later use
 # dput(gres, file="dputgres.Rdat", control = "keepNA") # to make sure don't lose results
 # use the following line to get it back
-# gres <- dget("dputgres.Rdat")
+gres <- dget("dputgres.Rdat")
 
 # get plots with ymaxlimit option turned on when necessary
 PlotJitter(gres[[1]], FALSE, NULL, NULL, FALSE, 8000)
