@@ -4,7 +4,7 @@
 #' @param asap.pin.obj contains data and comments from an ASAP3 pin file
 #' @export
 
-CreateParamList <- function(asap.pin.obj){
+CreateParamList <- function(asap.pin.obj, asap.dat){
   
   dat <- asap.pin.obj$dat
   comments <- asap.pin.obj$comments
@@ -85,5 +85,54 @@ CreateParamList <- function(asap.pin.obj){
   param.list$lowerbound[[p]][[1]] <- 0.20001
   param.list$upperbound[[p]][[1]] <- 1.0
   
+  # replace upper bound of logistic and double logistic selectivity parameters with nages
+  asap <- asap.dat$dat
+  counter <- 0
+  sel_block_option <- asap$sel_block_option
+  nages <- asap$n_ages
+  for (iblock in 1:asap$n_fleet_sel_blocks){
+    if (sel_block_option[iblock] == 1){  # by age
+      counter <- max(counter) + 1:nages
+    }
+    if (sel_block_option[iblock] == 2){  # single logistic
+      counter <- max(counter) + 1:2
+      for (ic in counter){
+        param.list$upperbound[[ic]][[1]] <- nages        
+      }
+    }
+    if (sel_block_option[iblock] == 3){  # double logistic
+      counter <- max(counter) + 1:4
+      for (ic in counter){
+        param.list$upperbound[[ic]][[1]] <- nages
+      }
+    }
+  }
+
+  # repeat for index selectivity  
+  ind <- seq(1, np)
+  counter <- ind[comments == "# index_sel_params[1]:"] - 1
+  if (counter > 0){
+    index_sel_option <- asap$index_sel_option
+    for (ind in 1:asap$n_indices){
+      if (asap$use_index[ind] == 1){
+        if (index_sel_option[ind] == 1){  # by age
+          counter <- max(counter) + 1:nages
+        }
+        if (index_sel_option[ind] == 2){  # single logistic
+          counter <- max(counter) + 1:2
+          for (ic in counter){
+            param.list$upperbound[[ic]][[1]] <- nages
+          }
+        }
+        if (index_sel_option[ind] == 3){  # double logistic
+          counter <- max(counter) + 1:4
+          for (ic in counter){
+            param.list$upperbound[[ic]][[1]] <- nages
+          }
+        }
+      }
+    }
+  }
+
   return(param.list)
 }
