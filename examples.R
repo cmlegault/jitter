@@ -120,11 +120,6 @@ gname <- "base" # did not have to do this, just an easier way of running through
 
 # GOM haddock - solid results with only one slightly diff objfxn val and 2 NA
 
-# when ran full case - both GOM cod and haddock did well with just a few wacko results
-#####################################################################################
-### TODO need to move full jitter into sub dir so doesn't conflict with jitter runs
-#####################################################################################
-
 # Pollock lots of realizations did not converge - model on edge - check for diffs in SSB trends
 # bombed out on full due to NAN in likelihood - add error trap?
 
@@ -187,3 +182,56 @@ p1 <- ggplot(gdf, aes(x=Year, y=SSB, color=rep)) +
   annotate("text", x=2010, y=18000, label=paste0(gdf$rep[72], " = ", gdf$objfxn[72])) +
   theme_bw()
 print(p1)
+
+###################################################################################
+# add note about jitter subdirectory getting overwritten if run both jitter and full ploptions
+# ran full case for both GOM cod and haddock did well with just a few wacko results
+###################################################################################
+
+istock <- 1
+njitter <- 200
+# compare jitter.pins for select params
+myparam <- c("# sel_params[1]:", "# log_Fmult_year1:", "# index_sel_params[12]:", "# log_SR_scaler:")
+np <- length(myparam)
+pname <- paste0(base.dir, gstocks[istock], "\\", gname, ".par")
+asap.pin <- ReadASAP3PinFile(pname)
+
+plab <- NULL
+for (ip in 1:np){
+  pval <- which(asap.pin$comments == myparam[ip])
+  thislab <- paste0(myparam[ip], 1:length(asap.pin$dat[[pval]][[1]]))
+  plab <- c(plab, thislab)
+}
+
+pindf <- data.frame()
+ip <- 1:np
+p <- myparam[ip]
+
+pval <- which(asap.pin$comments %in% p)
+thisdf <- data.frame(source="orig", param=plab, jitter=0, val=unlist(asap.pin$dat[pval]))
+pindf <- rbind(pindf, thisdf)
+
+for (ijit in 1:njitter){
+  pnamej <- paste0(base.dir, gstocks[istock], "\\jitter\\", "jitter", ijit, ".pin")
+  if (file.exists(pnamej)){
+    asap.pin <- ReadASAP3PinFile(pnamej)
+    thisdf <- data.frame(source="jitter", param=plab, jitter=ijit, val=unlist(asap.pin$dat[pval]))
+    pindf <- rbind(pindf, thisdf)
+  }
+  pnamef <- paste0(base.dir, gstocks[istock], "\\full-jitter\\", "jitter", ijit, ".pin")
+  if (file.exists(pnamef)){
+    asap.pin <- ReadASAP3PinFile(pnamef)
+    thisdf <- data.frame(source="full", param=plab, jitter=ijit, val=unlist(asap.pin$dat[pval]))
+    pindf <- rbind(pindf, thisdf)
+  }
+}  
+pindf
+
+jitter_pin_plot <- ggplot(pindf, aes(x=source, y=val)) +
+  geom_jitter(width = 0.2, height = 0) +
+  facet_wrap(~param, scales = "free_y") +
+  theme_bw()
+
+print(jitter_pin_plot)
+ggsave(jitter_pin_plot, file=paste0(base.dir, "\\", "jitter_pin_plot_", gstocks[istock], ".png"))
+## TODO something wrong with sel_params[1] - fix before saving
