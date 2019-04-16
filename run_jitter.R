@@ -66,7 +66,7 @@ RunJitter <- function(wd, asap.name, njitter, ploption, save.plots=TRUE, od=past
   # create base param.list using 
   # ploption = "full" for full range of parameters or 
   # ploption = "jitter" for values near parameter estimates
-  param.list <- CreateParamList(asap.pin)
+  param.list <- CreateParamList(asap.pin, asap.dat)
   param.list$type <- rep(ploption, length(param.list$type))
 
   # which parameters are not estimated

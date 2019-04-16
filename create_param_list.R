@@ -2,9 +2,10 @@
 #' 
 #' Provides the upper and lower limits for each parameter based on ASAP tpl bounded parameter values.
 #' @param asap.pin.obj contains data and comments from an ASAP3 pin file
+#' @param asap.dat.obj contains data and comments from an ASAP3 dat file
 #' @export
 
-CreateParamList <- function(asap.pin.obj, asap.dat){
+CreateParamList <- function(asap.pin.obj, asap.dat.obj){
   
   dat <- asap.pin.obj$dat
   comments <- asap.pin.obj$comments
@@ -86,7 +87,7 @@ CreateParamList <- function(asap.pin.obj, asap.dat){
   param.list$upperbound[[p]][[1]] <- 1.0
   
   # replace upper bound of logistic and double logistic selectivity parameters with nages
-  asap <- asap.dat$dat
+  asap <- asap.dat.obj$dat
   counter <- 0
   sel_block_option <- asap$sel_block_option
   nages <- asap$n_ages
