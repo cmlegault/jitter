@@ -188,8 +188,17 @@ print(p1)
 # ran full case for both GOM cod and haddock did well with just a few wacko results
 ###################################################################################
 
+## TODO need to rerun pollock (istock=3) due to double logistic selectivity - ugh
 istock <- 1
 njitter <- 200
+
+wd <- paste0(base.dir, gstocks[istock])
+## rename jitter subdir as jitter-jitter
+#full1 <- RunJitter(wd, gname, njitter, ploption = "full") 
+## rename jitter subdir as full-jitter
+## rename jitter-jitter subdir as jitter
+gres[[istock]] <- RunJitter(wd, gname, njitter, ploption = "jitter")
+
 # compare jitter.pins for select params
 myparam <- c("# sel_params[1]:", "# log_Fmult_year1:", "# index_sel_params[12]:", "# log_SR_scaler:")
 np <- length(myparam)
@@ -208,31 +217,33 @@ ip <- 1:np
 p <- myparam[ip]
 
 pval <- which(asap.pin$comments %in% p)
-thisdf <- data.frame(source="orig", param=plab, jitter=0, val=unlist(asap.pin$dat[pval]))
+thisdf <- data.frame(source="orig", param=plab, jitter=0, val=unlist(asap.pin$dat[pval]), Converged="Yes")
 pindf <- rbind(pindf, thisdf)
 
 for (ijit in 1:njitter){
   pnamej <- paste0(base.dir, gstocks[istock], "\\jitter\\", "jitter", ijit, ".pin")
+  rnamej <- paste0(base.dir, gstocks[istock], "\\jitter\\", "jitter", ijit, ".rdat")
   if (file.exists(pnamej)){
     asap.pin <- ReadASAP3PinFile(pnamej)
-    thisdf <- data.frame(source="jitter", param=plab, jitter=ijit, val=unlist(asap.pin$dat[pval]))
+    converged <- ifelse(file.exists(rnamej), "Yes", "No")
+    thisdf <- data.frame(source="jitter", param=plab, jitter=ijit, val=unlist(asap.pin$dat[pval]), Converged=converged)
     pindf <- rbind(pindf, thisdf)
   }
   pnamef <- paste0(base.dir, gstocks[istock], "\\full-jitter\\", "jitter", ijit, ".pin")
+  rnamef <- paste0(base.dir, gstocks[istock], "\\full-jitter\\", "jitter", ijit, ".rdat")
   if (file.exists(pnamef)){
     asap.pin <- ReadASAP3PinFile(pnamef)
-    thisdf <- data.frame(source="full", param=plab, jitter=ijit, val=unlist(asap.pin$dat[pval]))
+    converged <- ifelse(file.exists(rnamef), "Yes", "No")
+    thisdf <- data.frame(source="full", param=plab, jitter=ijit, val=unlist(asap.pin$dat[pval]), Converged=converged)
     pindf <- rbind(pindf, thisdf)
   }
 }  
 pindf
 
-jitter_pin_plot <- ggplot(pindf, aes(x=source, y=val)) +
+jitter_pin_plot <- ggplot(pindf, aes(x=source, y=val, color=Converged)) +
   geom_jitter(width = 0.2, height = 0) +
   facet_wrap(~param, scales = "free_y") +
   theme_bw()
 
 print(jitter_pin_plot)
 ggsave(jitter_pin_plot, file=paste0(base.dir, "\\", "jitter_pin_plot_", gstocks[istock], ".png"))
-## TODO something wrong with sel_params[1] - fix before saving
-## TODO add Converged flag (yes/no) to each jitter df result and plot with diff colors
