@@ -48,17 +48,17 @@ GetFixedParams <- function(asap.dat){
     if (asap$use_index[ind] == 1){
       index_ini <- index_sel_ini[[ind]]
       if (index_sel_option[ind] == 1){  # by age
-        counter <- counter + 1:nages
+        counter <- max(counter) + 1:nages
         temp <- rep("estimated", nages)
         temp[index_ini[1:nages, 2] <= 0] <- "fixed"
       }
       if (index_sel_option[ind] == 2){  # single logistic
-        counter <- counter + 1:2
+        counter <- max(counter) + 1:2
         temp <- rep("estimated", 2)
         temp[index_ini[(nages+1):(nages+2), 2] <= 0] <- "fixed"
       }
       if (index_sel_option[ind] == 3){  # double logistic
-        counter <- counter + 1:4
+        counter <- max(counter) + 1:4
         temp <- rep("estimated", 4)
         temp[sel_ini_block[(nages+3):(nages+6), 2] <= 0] <- "fixed"
       }
