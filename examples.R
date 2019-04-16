@@ -235,3 +235,4 @@ jitter_pin_plot <- ggplot(pindf, aes(x=source, y=val)) +
 print(jitter_pin_plot)
 ggsave(jitter_pin_plot, file=paste0(base.dir, "\\", "jitter_pin_plot_", gstocks[istock], ".png"))
 ## TODO something wrong with sel_params[1] - fix before saving
+## TODO add Converged flag (yes/no) to each jitter df result and plot with diff colors
