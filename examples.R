@@ -142,7 +142,7 @@ gres <- dget("dputgres.Rdat")
 # PlotJitter params are reslist, save.plots, od, plotf, showtitle, ymaxlimit=NULL
 # used the following line changing istock values one at a time to determine myymaxs values
 # PlotJitter(gres[[istock]], FALSE, base.dir, 'png', FALSE)
-myymaxs <- c(8000, NA, 14400, 20530, NA, NA, NA)
+myymaxs <- c(NA, NA, 14400, 20530, NA, NA, NA)
 mydir <- "C:\\Users\\chris.legault\\Desktop\\qqq\\jitter\\figs\\"
 for (istock in 1:nstocks){
   PlotJitter(gres[[istock]], TRUE, base.dir, 'png', FALSE)
@@ -182,6 +182,7 @@ p1 <- ggplot(gdf, aes(x=Year, y=SSB, color=rep)) +
   annotate("text", x=2010, y=18000, label=paste0(gdf$rep[72], " = ", gdf$objfxn[72])) +
   theme_bw()
 print(p1)
+ggsave(p1, file=paste0(base.dir, "\\", "ssb_plot_", gstocks[istock], ".png"))
 
 ###################################################################################
 # add note about jitter subdirectory getting overwritten if run both jitter and full ploptions
@@ -189,6 +190,7 @@ print(p1)
 ###################################################################################
 
 ## TODO need to rerun pollock (istock=3) due to double logistic selectivity - ugh
+
 istock <- 1
 njitter <- 200
 
