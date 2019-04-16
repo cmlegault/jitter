@@ -197,7 +197,6 @@ wd <- paste0(base.dir, gstocks[istock])
 #full1 <- RunJitter(wd, gname, njitter, ploption = "full") 
 ## rename jitter subdir as full-jitter
 ## rename jitter-jitter subdir as jitter
-gres[[istock]] <- RunJitter(wd, gname, njitter, ploption = "jitter")
 
 # compare jitter.pins for select params
 myparam <- c("# sel_params[1]:", "# log_Fmult_year1:", "# index_sel_params[12]:", "# log_SR_scaler:")
@@ -241,8 +240,9 @@ for (ijit in 1:njitter){
 pindf
 
 jitter_pin_plot <- ggplot(pindf, aes(x=source, y=val, color=Converged)) +
-  geom_jitter(width = 0.2, height = 0) +
+  geom_jitter(width = 0.2, height = 0, alpha=0.5) +
   facet_wrap(~param, scales = "free_y") +
+  scale_color_manual(values=c("blue", "red")) +
   theme_bw()
 
 print(jitter_pin_plot)
