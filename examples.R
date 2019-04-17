@@ -1,20 +1,6 @@
 # examples.R
 # code showing how to use the jitter functions
 
-# rem to set working directory to code directory for now
-# won't need to do this once part of ASAPplots
-
-source("read_ASAP3_dat_file.R")
-source("read_ASAP3_pin_file.R")
-source("create_param_list.R")
-source("get_fixed_params.R")
-source("write_ASAP3_dat_file.R")
-source("write_ASAP3_pin_file.R")
-source("jitter_asap.R")
-source("run_jitter.R")
-source("plot_jitter.R")
-
-# once put jitter in ASAPplots
 library("ASAPplots")
 library("ggplot2")
 library("dplyr")
@@ -159,10 +145,9 @@ p3 <- ggplot(gdf, aes(x=Year, y=SSB, color=rep)) +
 print(p3)
 ggsave(p3, file=paste0(base.dir, "\\", "ssb_plot_", gstocks[istock], ".png"))
 
-###################################################################################
-# add note about jitter subdirectory getting overwritten if run both jitter and full ploptions
-# ran full case for both GOM cod and haddock did well with just a few wacko results
-###################################################################################
+##################################################################################################
+# be careful about jitter subdirectory getting overwritten if run both jitter and full ploptions #
+##################################################################################################
 
 istock <- 1
 njitter <- 200
@@ -223,6 +208,7 @@ jitter_pin_plot <- ggplot(pindf, aes(x=source, y=val, color=Converged)) +
 print(jitter_pin_plot)
 ggsave(jitter_pin_plot, file=paste0(base.dir, "\\", "jitter_pin_plot_", gstocks[istock], ".png"))
 
+#################################################
 ### just for me, copy files into GitHub directory
 # section commented out so others don't run into problems with it
 # mydir <- "C:\\Users\\chris.legault\\Desktop\\qqq\\jitter\\figs\\"
