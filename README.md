@@ -15,7 +15,7 @@ whres <- RunJitter(wd, asap.name, njits)
 
 The RunJitter function will automatically create a subfolder called jitter in the wd directory that has 200 pin files names jitter1.pin, jitter2.pin, ..., jitter200.pin and for each successful model run there will be files jitterX.par and jitterX.rdat where X is an integer between 1 and 200 (some models may not converge and those results are not saved). The console will show the progress of the analysis, reporting the objective function value for each realization or noting that the realization did not converge. This analysis may take a while to run depending on how long the original model took to converge and how many realizations are requested. The function also defaults to saving a copy of the resulting plot of objective function value versus realization with a solid, horizontal line marking the original solution. For example, the white hake example produced:
 
-https://github.com/cmlegault/jitter/blob/master/figs/jitter_objfxn_whitehake.png
+![](./figs/jitter_objfxn_whitehake.png)
 
 This plot shows that the white hake model is robust to randomly jittered initial guesses with all 200 realizations producing the same objective function value as the original model. This can be seen by typing
 
@@ -23,7 +23,7 @@ whres
 
 which shows the 200 realizations under objfxn and the original objective function value under orig_objfxn, with all 201 values identical. This consistency does not always happen. There may be some realizations that report NA as the objective function, as is the case for Southern New England - Mid Atlantic yellowtail flounder:
 
-https://github.com/cmlegault/jitter/blob/master/figs/jitter_objfxn_snemayt.png
+![](./figs/jitter_objfxn_snemayt.png)
 
 where realizations 9, 109, 141, and 176 did not converge. This can be seen by looking in the jitter directory for which .pin files do not have corresponding .par and .rdat files, or more simply by typing in the console
 
@@ -31,7 +31,7 @@ which(is.na(snemaytres$objfxn))
 
 assuming snemaytres was the name of the variable used to call RunJitter. However, not all models are this robust. Sometimes there are a small number of runs that converge to results that are clearly much worse than the rest of the realizations, making it hard to see on the plot if all the runs near the original solution have the same value, for example redfish:
 
-https://github.com/cmlegault/jitter/blob/master/figs/jitter_objfxn_redfish.png
+![](./figs/jitter_objfxn_redfish.png)
 
 In this case, the function PlotJitter can be used interactively to see the effect of truncating the upper range of the ojbective function values. For example, in the redfish case, the upper limit for the y-axis could be set to 20530 using the following call:
 
@@ -39,7 +39,7 @@ PlotJitter(redfishres, FALSE, base.dir, 'png', FALSE, 20530)
 
 Any value that was originally greater than 20530 is replaced by 20530 and shown as a filled triangle in the plot:
 
-https://github.com/cmlegault/jitter/blob/master/figs/jitter_objfxn_redfish_ymaxlimit.png
+![](./figs/jitter_objfxn_redfish_ymaxlimit.png)
 
 To see the parameters of this (or any other function in R) simply type:
 
@@ -59,35 +59,35 @@ This can also be shown on the plot by setting showtitle to TRUE in either functi
 
 Sometimes the small nubmer of different objective function values do not hide other results, as is the case for Gulf of Maine haddock:
 
-https://github.com/cmlegault/jitter/blob/master/figs/jitter_objfxn_gomhaddock.png
+![](./figs/jitter_objfxn_gomhaddock.png)
 
 But sometimes they do, as for pollock:
 
-https://github.com/cmlegault/jitter/blob/master/figs/jitter_objfxn_pollock.png
+![](./figs/jitter_objfxn_pollock.png)
 
 compared with 
 
-https://github.com/cmlegault/jitter/blob/master/figs/jitter_objfxn_pollock_ymaxlimit.png
+![](./figs/jitter_objfxn_pollock_ymaxlimit.png)
 
 Other times there are just a nubmer of alternative solutions, but the original plot shows them well, as for Gulf of Maine cod:
 
-https://github.com/cmlegault/jitter/blob/master/figs/jitter_objfxn_gomcod.png
+![](./figs/jitter_objfxn_gomcod.png)
 
 And perhaps most interestingly, sometimes there are two alternative solutions that have large numbers of realizations, as is the case for Southern New England - Mid Atlantic winter flounder:
 
-https://github.com/cmlegault/jitter/blob/master/figs/jitter_objfxn_snemawinter.png
+![](./figs/jitter_objfxn_snemawinter.png)
 
 In this case, the original model found the lower of the two objective function values, but it raises the question of how different are these two solutions. This can be found by selecting a run with each objective function value and plotting the spawning stock biomass trends over time:
 
-https://github.com/cmlegault/jitter/blob/master/figs/ssb_plot_snemawinter.png
+![](./figs/ssb_plot_snemawinter.png)
 
 This plot shows the two SSB time series are quite different and would almost certainly have different implications for management. This is a situation that would deserve further exploration of the results to see what was driving these differences and whether alternative models should be considered in this case. Hint, the fleet selectivities are quite different between these two cases. This same approach can be used for pollock:
 
-https://github.com/cmlegault/jitter/blob/master/figs/ssb_plot_pollock.png
+![](./figs/ssb_plot_pollock.png)
 
 which shows the same trend scaled up or down a bit among the many different objective function values and Gulf of Maine cod:
 
-https://github.com/cmlegault/jitter/blob/master/figs/ssb_plot_gomcod.png
+![](./figs/ssb_plot_gomcod.png)
 
 which is more problematic in that the trends differ among the objective function values, with the lowest objective function value associated with the lowest SSB trend in this case.
 
@@ -95,7 +95,7 @@ which is more problematic in that the trends differ among the objective function
 
 As seen by the help page for the RunJitter function, there are a number of variables in the function call that have default values. The ploption is one that can be used to explore searching the full range of possible values for every parameter (set ploption="full"). The examples.R file shows how this can be done and the initial guesses for ploption="jitter" vs ploption="full" compared to the original solution for a number of parameters:
 
-https://github.com/cmlegault/jitter/blob/master/figs/jitter_pin_plot_gomcod.png
+![](./figs/jitter_pin_plot_gomcod.png)
 
 The jitter approach covers a much smaller range of initial guesses than the full option. There are some seemingly oddities associated with the jitter approach when the original solution is near one of the bounds for the parameter, for example log_SR_scalar where few of the jittered values are close to the original value. The JitterASAP function has example code commented out at the bottom of the function to allow users to explore how the Stock Synthesis approach to jittering is computed. 
 
