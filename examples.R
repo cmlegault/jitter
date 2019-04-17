@@ -189,8 +189,6 @@ ggsave(p1, file=paste0(base.dir, "\\", "ssb_plot_", gstocks[istock], ".png"))
 # ran full case for both GOM cod and haddock did well with just a few wacko results
 ###################################################################################
 
-## TODO need to rerun pollock (istock=3) due to double logistic selectivity - ugh
-
 istock <- 1
 njitter <- 200
 
