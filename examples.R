@@ -148,7 +148,7 @@ ggsave(p3, file=paste0(base.dir, "\\", "ssb_plot_", gstocks[istock], ".png"))
 ##################################################################################################
 # be careful about jitter subdirectory getting overwritten if run both jitter and full ploptions #
 ##################################################################################################
-
+# run full jitter and compare to SS approach
 istock <- 1
 njitter <- 200
 
@@ -208,6 +208,19 @@ jitter_pin_plot <- ggplot(pindf, aes(x=source, y=val, color=Converged)) +
 print(jitter_pin_plot)
 ggsave(jitter_pin_plot, file=paste0(base.dir, "\\", "jitter_pin_plot_", gstocks[istock], ".png"))
 
+#############
+# look at max(gradient) for each run to see if this tells us anything
+istock <- 1
+max.grad <- rep(NA, njitter)
+for (ijit in 1:njitter){
+  gradfile <- paste0(base.dir, gstocks[istock], "\\jitter\\jitter", ijit, ".par")
+  if (file.exists(gradfile)){
+    asap.grad <- readLines(gradfile, n=1)
+    par.split <- unlist(strsplit(asap.grad, " "))
+    max.grad[ijit] <- par.split[length(par.split)]
+  }
+}
+plot(max.grad, ylim=c(0, 0.04))
 #################################################
 ### just for me, copy files into GitHub directory
 # section commented out so others don't run into problems with it
