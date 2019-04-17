@@ -82,6 +82,7 @@ RunJitter <- function(wd, asap.name, njitter, ploption, save.plots=TRUE, od=past
   
   # loop through njitter writing pin file with random values and running program
   objfxn <- rep(NA, njitter)
+  nan <- NA # to deal with rdat file reporting nan as likelihood value
   for (ijit in 1:njitter){
     jname <- paste0("jitter", ijit, ".pin")
     asap.pin.jit <- JitterASAP(asap.pin, param.list)
