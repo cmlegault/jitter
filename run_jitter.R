@@ -4,14 +4,14 @@
 #' @param wd directory where ASAP run is located
 #' @param asap.name Base name of original dat file (without the .dat extension)
 #' @param njitter number of realizations to run with different initial guesses
-#' @param ploption "full" selects initial guesses from full range of possible values, "jitter" uses SS3.30 approach to select values close to parameter estimates
+#' @param ploption "full" selects initial guesses from full range of possible values, "jitter" uses SS3.30 approach to select values close to parameter estimates (defaults to "jitter")
 #' @param save.plots saves indivdual plots (defaults to TRUE)
 #' @param od location where plot is saved (defaults to jitter subdirectory of wd)
 #' @param plotf format for individual plots (defaults to 'png')
 #' @param showtitle option to include title of numeric results on objective function plot (defaults to FALSE)
 #' @export
 
-RunJitter <- function(wd, asap.name, njitter, ploption, save.plots=TRUE, od=paste0(wd,"\\jitter\\"), plotf='png', showtitle=FALSE){
+RunJitter <- function(wd, asap.name, njitter, ploption="jitter", save.plots=TRUE, od=paste0(wd,"\\jitter\\"), plotf='png', showtitle=FALSE){
   
   # error checks for missing files 
   if (!file.exists(paste0(wd, "\\", asap.name, ".dat"))){
