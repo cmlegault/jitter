@@ -27,7 +27,7 @@ gname <- "base" # did not have to do this, just an easier way of running through
 # use the following line to save gres for later use:
 # dput(gres, file=paste0(base.dir, "dputgres.Rdat"), control = "keepNA") 
 # use the following line to get it back:
-gres <- dget(pasate0(base.dir, "dputgres.Rdat"))
+gres <- dget(paste0(base.dir, "dputgres.Rdat"))
 
 # get plots with ymaxlimit option turned on when necessary
 # PlotJitter params are reslist, save.plots, od, plotf, showtitle, ymaxlimit=NULL
@@ -221,6 +221,7 @@ for (ijit in 1:njitter){
   }
 }
 plot(max.grad, ylim=c(0, 0.04))
+
 #################################################
 ### just for me, copy files into GitHub directory
 # section commented out so others don't run into problems with it
