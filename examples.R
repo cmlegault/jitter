@@ -48,13 +48,11 @@ gres <- dget(pasate0(base.dir, "dputgres.Rdat"))
 # used the following line changing istock values one at a time to determine myymaxs values
 # PlotJitter(gres[[istock]], FALSE, base.dir, 'png', FALSE)
 myymaxs <- c(NA, NA, 14400, 20530, NA, NA, NA)
-mydir <- "C:\\Users\\chris.legault\\Desktop\\qqq\\jitter\\figs\\"
+
 for (istock in 1:nstocks){
   PlotJitter(gres[[istock]], TRUE, base.dir, 'png', FALSE)
-  shell(paste0("copy jitter_objfxn.png ", mydir, "jitter_objfxn_", gstocks[istock], ".png"))
   if (!is.na(myymaxs[istock])){
     PlotJitter(gres[[istock]], TRUE, base.dir, 'png', FALSE, myymaxs[istock])
-    shell(paste0("copy jitter_objfxn.png ", mydir, "jitter_objfxn_", gstocks[istock], "_ymaxlimit.png"))
   }
 }
 graphics.off()
@@ -161,8 +159,6 @@ p3 <- ggplot(gdf, aes(x=Year, y=SSB, color=rep)) +
 print(p3)
 ggsave(p3, file=paste0(base.dir, "\\", "ssb_plot_", gstocks[istock], ".png"))
 
-shell(paste0("copy ", base.dir, "\\ssb_plot_*.png ", mydir))
-
 ###################################################################################
 # add note about jitter subdirectory getting overwritten if run both jitter and full ploptions
 # ran full case for both GOM cod and haddock did well with just a few wacko results
@@ -226,4 +222,17 @@ jitter_pin_plot <- ggplot(pindf, aes(x=source, y=val, color=Converged)) +
 
 print(jitter_pin_plot)
 ggsave(jitter_pin_plot, file=paste0(base.dir, "\\", "jitter_pin_plot_", gstocks[istock], ".png"))
-shell(paste0("copy ", base.dir, "\\jitter_pin_plot_*.png ", mydir))
+
+### just for me, copy files into GitHub directory
+# section commented out so others don't run into problems with it
+# mydir <- "C:\\Users\\chris.legault\\Desktop\\qqq\\jitter\\figs\\"
+# for (istock in 1:nstocks){
+#   shell(paste0("copy jitter_objfxn.png ", mydir, "jitter_objfxn_", gstocks[istock], ".png"))
+#   if (!is.na(myymaxs[istock])){
+#     shell(paste0("copy jitter_objfxn.png ", mydir, "jitter_objfxn_", gstocks[istock], "_ymaxlimit.png"))
+#   }
+# }
+# 
+# shell(paste0("copy ", base.dir, "\\ssb_plot_*.png ", mydir))
+# 
+# shell(paste0("copy ", base.dir, "\\jitter_pin_plot_*.png ", mydir))
