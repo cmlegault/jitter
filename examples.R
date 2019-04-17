@@ -157,13 +157,20 @@ graphics.off()
 # compare some SSB time series for original and alternative solutions
 ii <- 1:nstocks
 irep <- 1:njitter
+
 istock <- ii[gstocks == "snemawinter"]
 gdf <- data.frame()
 objvals <- unique(gres[[istock]]$objfxn)
 objvals <- objvals[!is.na(objvals)]
+objvals <- objvals[order(objvals)]
 nobjvals <- length(objvals)
 for (ival in 1:nobjvals){
-  myrep <- base::sample(irep[which(gres[[istock]]$objfxn == objvals[ival])], 1)
+  mysamp <- irep[which(gres[[istock]]$objfxn == objvals[ival])]
+  if (length(mysamp) == 1){
+    myrep <- mysamp
+  } else {
+    myrep <- base::sample(mysamp, 1)  
+  }
   asap <- dget(paste0(base.dir, gstocks[istock], "\\jitter\\jitter", myrep, ".rdat"))
   thisdf <- data.frame(stock = gstocks[istock], 
                        rep = as.factor(myrep),
@@ -183,6 +190,71 @@ p1 <- ggplot(gdf, aes(x=Year, y=SSB, color=rep)) +
   theme_bw()
 print(p1)
 ggsave(p1, file=paste0(base.dir, "\\", "ssb_plot_", gstocks[istock], ".png"))
+
+# next stock
+istock <- ii[gstocks == "pollock"]
+gdf <- data.frame()
+objvals <- unique(gres[[istock]]$objfxn)
+objvals <- objvals[!is.na(objvals)]
+objvals <- objvals[objvals <= 14400]
+objvals <- objvals[order(objvals)]
+nobjvals <- length(objvals)
+for (ival in 1:nobjvals){
+  mysamp <- irep[which(gres[[istock]]$objfxn == objvals[ival])]
+  if (length(mysamp) == 1){
+    myrep <- mysamp
+  } else {
+    myrep <- base::sample(mysamp, 1)  
+  }
+  asap <- dget(paste0(base.dir, gstocks[istock], "\\jitter\\jitter", myrep, ".rdat"))
+  thisdf <- data.frame(stock = gstocks[istock], 
+                       rep = as.factor(myrep),
+                       objfxn = objvals[ival],
+                       Year = seq(asap$parms$styr, asap$parms$endyr),
+                       SSB = asap$SSB)
+  gdf <- rbind(gdf, thisdf)
+}
+
+p2 <- ggplot(gdf, aes(x=Year, y=SSB, color=rep)) +
+  geom_point() +
+  geom_line() +
+  ggtitle(gstocks[istock]) +
+  expand_limits(y = 0) +
+  theme_bw()
+print(p2)
+ggsave(p2, file=paste0(base.dir, "\\", "ssb_plot_", gstocks[istock], ".png"))
+
+# next stock
+istock <- ii[gstocks == "gomcod"]
+gdf <- data.frame()
+objvals <- unique(gres[[istock]]$objfxn)
+objvals <- objvals[!is.na(objvals)]
+objvals <- objvals[order(objvals)]
+nobjvals <- length(objvals)
+for (ival in 1:nobjvals){
+  mysamp <- irep[which(gres[[istock]]$objfxn == objvals[ival])]
+  if (length(mysamp) == 1){
+    myrep <- mysamp
+  } else {
+    myrep <- base::sample(mysamp, 1)  
+  }
+  asap <- dget(paste0(base.dir, gstocks[istock], "\\jitter\\jitter", myrep, ".rdat"))
+  thisdf <- data.frame(stock = gstocks[istock], 
+                       rep = as.factor(myrep),
+                       objfxn = objvals[ival],
+                       Year = seq(asap$parms$styr, asap$parms$endyr),
+                       SSB = asap$SSB)
+  gdf <- rbind(gdf, thisdf)
+}
+
+p3 <- ggplot(gdf, aes(x=Year, y=SSB, color=rep)) +
+  geom_point() +
+  geom_line() +
+  ggtitle(gstocks[istock]) +
+  expand_limits(y = 0) +
+  theme_bw()
+print(p3)
+ggsave(p3, file=paste0(base.dir, "\\", "ssb_plot_", gstocks[istock], ".png"))
 
 ###################################################################################
 # add note about jitter subdirectory getting overwritten if run both jitter and full ploptions
