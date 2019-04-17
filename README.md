@@ -11,7 +11,7 @@ To conduct the jitter analysis, you need the same two variables as used in ASAPp
 wd <- "C:\\Users\\chris.legault\\Desktop\\jitter_asap\\whitehake"
 asap.name <- "whitehake"
 njits <- 200
-whres <- RunJitter(wd, asap.name, njits)
+whitehakeres <- RunJitter(wd, asap.name, njits)
 
 The RunJitter function will automatically create a subfolder called jitter in the wd directory that has 200 pin files names jitter1.pin, jitter2.pin, ..., jitter200.pin and for each successful model run there will be files jitterX.par and jitterX.rdat where X is an integer between 1 and 200 (some models may not converge and those results are not saved). The console will show the progress of the analysis, reporting the objective function value for each realization or noting that the realization did not converge. This analysis may take a while to run depending on how long the original model took to converge and how many realizations are requested. The function also defaults to saving a copy of the resulting plot of objective function value versus realization with a solid, horizontal line marking the original solution. For example, the white hake example produced:
 
@@ -19,7 +19,7 @@ The RunJitter function will automatically create a subfolder called jitter in th
 
 This plot shows that the white hake model is robust to randomly jittered initial guesses with all 200 realizations producing the same objective function value as the original model. This can be seen by typing
 
-whres
+whitehakeres
 
 which shows the 200 realizations under objfxn and the original objective function value under orig_objfxn, with all 201 values identical. This consistency does not always happen. There may be some realizations that report NA as the objective function, as is the case for Southern New England - Mid Atlantic yellowtail flounder:
 
@@ -57,7 +57,7 @@ which(reslist$objfxn < reslist$orig_objfxn)
 
 This can also be shown on the plot by setting showtitle to TRUE in either functions PlotJitter or RunJitter. 
 
-Sometimes the small nubmer of different objective function values do not hide other results, as is the case for Gulf of Maine haddock:
+Sometimes the small number of different objective function values do not hide other results, as is the case for Gulf of Maine haddock:
 
 ![](./figs/jitter_objfxn_gomhaddock.png)
 
