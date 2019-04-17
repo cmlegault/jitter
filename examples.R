@@ -221,6 +221,7 @@ for (ijit in 1:njitter){
   }
 }
 plot(max.grad, ylim=c(0, 0.04))
+plot(gres[[istock]]$objfxn, max.grad, ylim=c(0, 0.04), main=gstocks[istock])
 
 #################################################
 ### just for me, copy files into GitHub directory
