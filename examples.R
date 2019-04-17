@@ -256,6 +256,8 @@ p3 <- ggplot(gdf, aes(x=Year, y=SSB, color=rep)) +
 print(p3)
 ggsave(p3, file=paste0(base.dir, "\\", "ssb_plot_", gstocks[istock], ".png"))
 
+shell(paste0("copy ", base.dir, "\\ssb_plot_*.png ", mydir))
+
 ###################################################################################
 # add note about jitter subdirectory getting overwritten if run both jitter and full ploptions
 # ran full case for both GOM cod and haddock did well with just a few wacko results
@@ -319,3 +321,4 @@ jitter_pin_plot <- ggplot(pindf, aes(x=source, y=val, color=Converged)) +
 
 print(jitter_pin_plot)
 ggsave(jitter_pin_plot, file=paste0(base.dir, "\\", "jitter_pin_plot_", gstocks[istock], ".png"))
+shell(paste0("copy ", base.dir, "\\jitter_pin_plot_*.png ", mydir))
