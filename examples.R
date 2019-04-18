@@ -238,7 +238,7 @@ min(mgdf$max.grad, na.rm=TRUE) # check to make sure y axis lower limit sufficien
 
 mgplot <- ggplot(filter(mgdf, stock != "whitehake"), aes(x=ObjFxn, y=max.grad)) +
   geom_point(shape=1) +
-  geom_hline(aes(yintercept = 0.001), color="red", linetype="dashed") +
+  geom_hline(aes(yintercept = 0.0001), color="red", linetype="dashed") +
   scale_y_continuous(name="max(gradient)", breaks=c(1e-6, 1e-5, 1e-4, 1e-3, 1e-2, 1e-1, 1), labels=c("1e-6", "0.00001", "0.0001", "0.001", "0.01", "0.1", "1"), limits=c(1e-6, 1), trans='log10') +
   facet_wrap(~stock, scales = "free_x") +
   theme_bw()
