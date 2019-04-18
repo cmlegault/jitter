@@ -109,5 +109,11 @@ Another way to look at the results is to see which of the jittered realizations 
 
 ![](./figs/max_gradient_plot.png)
 
-Thanks to Liz Brooks for suggesting this way of looking at the results.
+## Future Work
+
+Guidance is needed for a number of issues, such as how many jitters to examine, what to do if a jittered result has a lower objective function value than the original model, how to best diagnose and address model instability, whether jitter results can indicate potential problems with retrospective analyses, etc. Feedback is welcome.
+
+## Thanks
+
+Thanks to the NMFS Assessment Methods Working Group for initiating a discussion about model diagnostics around the country and identifying jittering as a useful diagnostic. Thanks to Liz Brooks for suggesting the max(gradient) analyses and providing feedback on an earlier version of this write up.
 
