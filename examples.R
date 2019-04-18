@@ -210,18 +210,40 @@ ggsave(jitter_pin_plot, file=paste0(base.dir, "\\", "jitter_pin_plot_", gstocks[
 
 #############
 # look at max(gradient) for each run to see if this tells us anything
-istock <- 1
-max.grad <- rep(NA, njitter)
-for (ijit in 1:njitter){
-  gradfile <- paste0(base.dir, gstocks[istock], "\\jitter\\jitter", ijit, ".par")
-  if (file.exists(gradfile)){
-    asap.grad <- readLines(gradfile, n=1)
-    par.split <- unlist(strsplit(asap.grad, " "))
-    max.grad[ijit] <- par.split[length(par.split)]
+# thanks to Liz Brooks for suggesting this exploration
+mgdf <- data.frame()
+for (istock in 1:nstocks){
+  max.grad <- rep(NA, njitter)
+  for (ijit in 1:njitter){
+    gradfile <- paste0(base.dir, gstocks[istock], "\\jitter\\jitter", ijit, ".par")
+    if (file.exists(gradfile)){
+      asap.grad <- readLines(gradfile, n=1)
+      par.split <- unlist(strsplit(asap.grad, " "))
+      max.grad[ijit] <- as.numeric(par.split[length(par.split)])
+    }
   }
+  tempobjfxn <- gres[[istock]]$objfxn
+  if (!is.na(myymaxs[istock])){
+    tempobjfxn[which(tempobjfxn > myymaxs[istock])] <- myymaxs[istock]
+  }
+  thisdf <- data.frame(stock = gstocks[istock],
+                     Realization = 1:njitter,
+                     ObjFxn = tempobjfxn,
+                     max.grad = max.grad)
+  mgdf <- rbind(mgdf, thisdf)
 }
-plot(max.grad, ylim=c(0, 0.04))
-plot(gres[[istock]]$objfxn, max.grad, ylim=c(0, 0.04), main=gstocks[istock])
+
+mgdf$max.grad[which(mgdf$max.grad > 1)] # how many values will be cut off in plot?
+min(mgdf$max.grad, na.rm=TRUE) # check to make sure y axis lower limit sufficient
+
+mgplot <- ggplot(filter(mgdf, stock != "whitehake"), aes(x=ObjFxn, y=max.grad)) +
+  geom_point(shape=1) +
+  geom_hline(aes(yintercept = 0.001), color="red", linetype="dashed") +
+  scale_y_continuous(name="max(gradient)", breaks=c(1e-6, 1e-5, 1e-4, 1e-3, 1e-2, 1e-1, 1), labels=c("1e-6", "0.00001", "0.0001", "0.001", "0.01", "0.1", "1"), limits=c(1e-6, 1), trans='log10') +
+  facet_wrap(~stock, scales = "free_x") +
+  theme_bw()
+print(mgplot)
+ggsave(mgplot, file=paste0(base.dir, "\\", "max_gradient_plot.png"))
 
 #################################################
 ### just for me, copy files into GitHub directory
@@ -237,3 +259,5 @@ plot(gres[[istock]]$objfxn, max.grad, ylim=c(0, 0.04), main=gstocks[istock])
 # shell(paste0("copy ", base.dir, "\\ssb_plot_*.png ", mydir))
 # 
 # shell(paste0("copy ", base.dir, "\\jitter_pin_plot_*.png ", mydir))
+#
+# shell(paste0("copy ", base.dir, "\\max_gradient_plot.png ", mydir))
