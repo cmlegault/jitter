@@ -1,6 +1,6 @@
 # jitter
 
-The ability to change the initial guesses slightly (known as jittering) for an ASAP run is now available in the ASAPplots package (https://github.com/cmlegault/ASAPplots). This site contains a number of worked examples demonstrating how this approach can be used to help diagnose problems with a model formulation or demosntrate that a model formulation is robust to a wide range of intitial guesses.
+The ability to change the initial guesses slightly (known as jittering) for an ASAP run is now available in the ASAPplots package (https://github.com/cmlegault/ASAPplots). This site contains a number of worked examples demonstrating how this approach can be used to help diagnose problems with a model formulation or demonstrate that a model formulation is robust to a wide range of intitial guesses.
 
 See examples.R for the code used to produce the following results. The rest of the R files are now part of ASAPplots, they are included here only so readers can more easily see the functions. These files will not be updated, see ASAPplots for the most recent versions of the functions.
 
